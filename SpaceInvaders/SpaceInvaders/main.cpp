@@ -5,7 +5,7 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(640, 480), "Space Invaders!");
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Space Invaders!");
 	sf::Clock clock;
 	std::unique_ptr<Game> game = std::make_unique<Invaders>();
 
@@ -17,29 +17,35 @@ int main()
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			if (game->HandleEvent(event))
-				continue;
-
 			switch (event.type)
 			{
 			case sf::Event::Closed:
+				game->SaveAndExit();
 				window.close();
 				break;
 			case sf::Event::Resized:
 			{
+				// TODO
+				if (window.getView().getSize().x == event.size.width) // changed height
+					event.size.width = event.size.height * 16 / 9;
+				else
+					event.size.height = event.size.width * 9 / 16;
+
 				std::cout << "new width: " << event.size.width << std::endl;
 				std::cout << "new height: " << event.size.height << std::endl;
-				sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-				window.setView(sf::View(visibleArea));
+				//sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+				//window.setView(sf::View(visibleArea));
+				window.setSize(sf::Vector2u(event.size.width, event.size.height));
 			}
 				break;
 			case sf::Event::LostFocus:
-				std::cout << "Pause" << std::endl;
+				game->Pause();
 				break;
 			case sf::Event::GainedFocus:
-				std::cout << "Resume" << std::endl;
+				game->Resume();
 				break;
 			default:
+				game->HandleEvent(event);
 				break;
 			}
 		}
