@@ -8,6 +8,7 @@ Invaders.hpp - main game code
 #include "Game.hpp"
 #include "Player.hpp"
 #include "Rocket.hpp"
+#include "Enemy.hpp"
 #include <vector>
 
 class Invaders : public Game
@@ -18,6 +19,7 @@ private:
 	// game objects
 	Player player;
 	std::vector<Rocket> rockets;
+	std::vector<std::unique_ptr<Enemy>> enemies;
 public:
 	Invaders();
 	// Inherited via Game
@@ -32,6 +34,8 @@ private:
 	void UpdatePlayer(sf::Time deltaTime);
 	void UpdateRockets(sf::Time deltaTime);
 	void PlayerShoot();
+	void UpdateEnemies(sf::Time deltaTime);
+	void UpdateRocketsCollisions();
 };
 
 #endif
