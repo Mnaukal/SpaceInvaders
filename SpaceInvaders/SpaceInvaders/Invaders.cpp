@@ -1,8 +1,8 @@
 #include "Invaders.hpp"
 
-Invaders::Invaders() : player(), Size(1280, 720), timer(sf::Time::Zero) {
+Invaders::Invaders() : player(), timer(sf::Time::Zero) {
 	InitRandom();
-	player.SetPosition(sf::Vector2f(Size.x / 2, Size.y - 23)); // TODO number
+	player.SetPosition(sf::Vector2f(PLAYER_START_POSITION_X, PLAYER_START_POSITION_Y)); 
 }
 
 void Invaders::Update(sf::Time deltaTime)
@@ -30,7 +30,7 @@ void Invaders::UpdatePlayer(sf::Time deltaTime)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		float deltaX = deltaTime.asSeconds() * player.Speed;
-		if (player.GetPosition().x + deltaX < Size.x)
+		if (player.GetPosition().x + deltaX < SCREEN_WIDTH)
 			player.MoveBy(deltaX, 0);
 	}
 
@@ -51,7 +51,7 @@ void Invaders::UpdateRockets(sf::Time deltaTime)
 		r->MoveBy(0, -deltaTime.asSeconds() * r->Speed);
 
 		// remove rocket
-		if (r->GetPosition().y < 0 - 30) // TODO number
+		if (r->GetPosition().y < 0 - ROCKET_SIZE_Y / 2)
 			r = rockets.erase(r); // TODO possible to swap with last and delete faster
 		else
 			++r;
@@ -82,8 +82,8 @@ void Invaders::UpdateEnemies(sf::Time deltaTime)
 	{
 		(*e)->MoveBy(0, deltaTime.asSeconds() * (*e)->Speed);
 
-		// remove rocket
-		if ((*e)->GetPosition().y > Size.y) // TODO number
+		// remove enemy
+		if ((*e)->GetPosition().y > SCREEN_HEIGHT + ENEMY_SIZE) // TODO number (enemy size may vary in future)
 			e = enemies.erase(e); // TODO possible to swap with last and delete faster
 		else
 			++e;
@@ -117,7 +117,7 @@ void Invaders::UpdateRocketsCollisions()
 void Invaders::GenerateEnemy()
 {
 	std::unique_ptr<Enemy> e = std::make_unique<Enemy>();
-	e->SetPosition(sf::Vector2f(RandomNumber(30, 1251), 0)); // TODO numbers
+	e->SetPosition(sf::Vector2f(RandomNumber(ENEMY_SIZE / 2, SCREEN_WIDTH + 1), 0)); // TODO number (enemy size may vary in future)
 	enemies.push_back(std::move(e));
 }
 

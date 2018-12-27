@@ -6,14 +6,14 @@ Rocket.hpp - code for rockets shot by player
 #define rocket_hpp_
 
 #include "Game.hpp"
+#include "InvadersConstants.hpp"
 
 class Rocket : public GameObject
 {
 private:
 	sf::RectangleShape shape;
-	float SIZE_X, SIZE_Y;
 public:
-	float Speed = 500;
+	float Speed = ROCKET_SPEED;
 	Rocket();
 	Rocket(float speed) : Rocket() { Speed = speed; };
 	// Inherited via GameObject
@@ -28,7 +28,6 @@ private:
 	float scale = 0;
 public:
 	Explosion(sf::Vector2f pos);
-	float ScaleSpeed = 3.f;
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
 	virtual sf::Rect<float> BoundingBox() override;

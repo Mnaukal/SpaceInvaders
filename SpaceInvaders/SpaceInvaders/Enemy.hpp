@@ -6,14 +6,15 @@ Enemy.hpp - common code for enemies
 #define enemy_hpp_
 
 #include "Game.hpp"
+#include "InvadersConstants.hpp"
 
 class Enemy : public GameObject
 {
 private:
 	sf::RectangleShape shape;
-	float SIZE;
+	float Size;
 public:
-	float Speed = 100;
+	float Speed = ENEMY_SPEED;
 	Enemy();
 	Enemy(float speed) : Enemy() { Speed = speed; };
 	// Inherited via GameObject

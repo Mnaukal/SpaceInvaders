@@ -10,13 +10,13 @@ Invaders.hpp - main game code
 #include "Rocket.hpp"
 #include "Enemy.hpp"
 #include "Common.hpp"
+#include "InvadersConstants.hpp"
 #include <vector>
 
 class Invaders : public Game
 {
 private:
 	bool paused = false;
-	const sf::Vector2i Size;
 	// game objects
 	Player player;
 	std::vector<Rocket> rockets;

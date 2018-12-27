@@ -6,14 +6,14 @@ Player.hpp - code for user controlled player
 #define player_hpp_
 
 #include "Game.hpp"
+#include "InvadersConstants.hpp"
 
 class Player : public GameObject
 {
 private:
 	sf::CircleShape shape;
-	float SIZE;
 public:
-	float Speed = 300;
+	float Speed = PLAYER_SPEED;
 	Player();
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;

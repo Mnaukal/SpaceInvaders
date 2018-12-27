@@ -1,6 +1,6 @@
 #include "Enemy.hpp"
 
-Enemy::Enemy() : SIZE(60.f), shape(sf::Vector2f(60.f, 60.f))
+Enemy::Enemy() : Size(ENEMY_SIZE), shape(sf::Vector2f(ENEMY_SIZE, ENEMY_SIZE))
 {
 	shape.setFillColor(sf::Color::Red);
 	shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
@@ -14,5 +14,5 @@ void Enemy::Draw(sf::RenderWindow & window)
 
 sf::Rect<float> Enemy::BoundingBox()
 {
-	return sf::Rect<float>(position.x - SIZE/2, position.y - SIZE/2, SIZE, SIZE);
+	return sf::Rect<float>(position.x - Size/2, position.y - Size/2, Size, Size);
 }

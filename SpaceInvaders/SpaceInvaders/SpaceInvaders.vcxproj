@@ -147,6 +147,7 @@
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Invaders.hpp" />
+    <ClInclude Include="InvadersConstants.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Rocket.hpp" />
   </ItemGroup>
