@@ -20,6 +20,7 @@ private:
 	// game objects
 	Player player;
 	std::vector<Rocket> rockets;
+	std::vector<Explosion> explosions;
 	std::vector<std::unique_ptr<Enemy>> enemies;
 	sf::Time timer;
 public:
@@ -35,6 +36,7 @@ public:
 private:
 	void UpdatePlayer(sf::Time deltaTime);
 	void UpdateRockets(sf::Time deltaTime);
+	void UpdateExplosions(sf::Time deltaTime);
 	void PlayerShoot();
 	void UpdateEnemies(sf::Time deltaTime);
 	void UpdateRocketsCollisions();

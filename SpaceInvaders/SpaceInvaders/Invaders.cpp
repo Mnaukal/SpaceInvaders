@@ -12,6 +12,7 @@ void Invaders::Update(sf::Time deltaTime)
 
 	UpdatePlayer(deltaTime);
 	UpdateRockets(deltaTime);
+	UpdateExplosions(deltaTime);
 	UpdateEnemies(deltaTime);
 	UpdateRocketsCollisions();
 
@@ -57,6 +58,17 @@ void Invaders::UpdateRockets(sf::Time deltaTime)
 	}
 }
 
+void Invaders::UpdateExplosions(sf::Time deltaTime)
+{
+	for (auto e = explosions.begin(); e != explosions.end();)
+	{
+		if (e->Animate(deltaTime))
+			e = explosions.erase(e); // TODO possible to swap with last and delete faster
+		else
+			++e;
+	}
+}
+
 void Invaders::PlayerShoot()
 {
 	Rocket r;
@@ -84,8 +96,11 @@ void Invaders::UpdateRocketsCollisions()
 	{
 		for (auto e = enemies.begin(); e != enemies.end();)
 		{
-			if ((*e)->BoundingBox().intersects(r->BoundingBox())) // rocket hits enemy
+			sf::Rect<float> intersection;
+			if ((*e)->BoundingBox().intersects(r->BoundingBox(), intersection)) // rocket hits enemy
 			{
+				Explosion expl(Center(intersection));
+				explosions.push_back(expl);
 				r = rockets.erase(r); // TODO possible to swap with last and delete faster
 				e = enemies.erase(e);
 				break;
@@ -125,6 +140,8 @@ void Invaders::Draw(sf::RenderWindow & window)
 		r.Draw(window);
 	for (auto && e : enemies)
 		e->Draw(window);
+	for (auto && e : explosions)
+		e.Draw(window);
 	player.Draw(window);
 }
 

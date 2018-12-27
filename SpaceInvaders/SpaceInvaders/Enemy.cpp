@@ -2,7 +2,7 @@
 
 Enemy::Enemy() : SIZE(60.f), shape(sf::Vector2f(60.f, 60.f))
 {
-	shape.setFillColor(sf::Color::Blue);
+	shape.setFillColor(sf::Color::Red);
 	shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 }
 

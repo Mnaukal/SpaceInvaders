@@ -1,7 +1,7 @@
 #include "Player.hpp"
 
 Player::Player() : SIZE(80.f), shape(80.f, 3) {
-	shape.setFillColor(sf::Color::Red);
+	shape.setFillColor(sf::Color::Green);
 	shape.setOrigin(shape.getRadius(), shape.getRadius());
 };
 

@@ -31,5 +31,26 @@ public:
 	void SetPosition(sf::Vector2f newPosition) { position = newPosition; };
 	virtual sf::Rect<float> BoundingBox() = 0;
 };
+
+class Animated 
+{
+private:
+	float animationProgress = 0;
+	float animationLength;
+protected:
+	virtual void DoAnimation(float progress) = 0;
+public:
+	Animated(float length) : animationLength(length) { };
+	// advances animation, returns true if animation is finished
+	bool Animate(sf::Time deltaTime) {
+		animationProgress += deltaTime.asSeconds() / animationLength;
+		if (animationProgress >= 1)
+			return true;
+
+		DoAnimation(animationProgress);
+		return false;
+	};
+	float GetAnimationProgress() const { return animationProgress; };
+};
 #endif
 
