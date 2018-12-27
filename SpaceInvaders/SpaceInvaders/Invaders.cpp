@@ -1,9 +1,8 @@
 #include "Invaders.hpp"
 
-Invaders::Invaders() : player(), Size(1280, 720) {
+Invaders::Invaders() : player(), Size(1280, 720), timer(sf::Time::Zero) {
+	InitRandom();
 	player.SetPosition(sf::Vector2f(Size.x / 2, Size.y - 23)); // TODO number
-
-	enemies.emplace_back(std::make_unique<Enemy>());
 }
 
 void Invaders::Update(sf::Time deltaTime)
@@ -15,6 +14,13 @@ void Invaders::Update(sf::Time deltaTime)
 	UpdateRockets(deltaTime);
 	UpdateEnemies(deltaTime);
 	UpdateRocketsCollisions();
+
+	timer -= deltaTime;
+	if (timer <= sf::Time::Zero)
+	{
+		GenerateEnemy();
+		timer = sf::seconds(RandomNumber(0, 3));
+	}
 }
 
 void Invaders::UpdatePlayer(sf::Time deltaTime)
@@ -80,8 +86,9 @@ void Invaders::UpdateRocketsCollisions()
 		{
 			if ((*e)->BoundingBox().intersects(r->BoundingBox())) // rocket hits enemy
 			{
-				r = rockets.erase(r);
+				r = rockets.erase(r); // TODO possible to swap with last and delete faster
 				e = enemies.erase(e);
+				break;
 			}
 			else
 				++e;
@@ -90,6 +97,13 @@ void Invaders::UpdateRocketsCollisions()
 		if(r != rockets.end())
 			++r;
 	}
+}
+
+void Invaders::GenerateEnemy()
+{
+	std::unique_ptr<Enemy> e = std::make_unique<Enemy>();
+	e->SetPosition(sf::Vector2f(RandomNumber(30, 1251), 0)); // TODO numbers
+	enemies.push_back(std::move(e));
 }
 
 bool Invaders::HandleEvent(const sf::Event & event)

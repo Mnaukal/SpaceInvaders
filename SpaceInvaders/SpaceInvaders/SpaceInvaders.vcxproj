@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Common.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Invaders.cpp" />
     <ClCompile Include="main.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="Rocket.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common.hpp" />
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Invaders.hpp" />
