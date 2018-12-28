@@ -56,6 +56,17 @@ void Invaders::UpdateRockets(sf::Time deltaTime)
 		else
 			++r;
 	}
+
+	for (auto r = enemyRockets.begin(); r != enemyRockets.end();)
+	{
+		r->MoveBy(0, -deltaTime.asSeconds() * r->Speed);
+
+		// remove rocket
+		if (r->GetPosition().y < 0 - ROCKET_SIZE_Y / 2)
+			r = enemyRockets.erase(r); // TODO possible to swap with last and delete faster
+		else
+			++r;
+	}
 }
 
 void Invaders::UpdateExplosions(sf::Time deltaTime)
@@ -80,7 +91,13 @@ void Invaders::UpdateEnemies(sf::Time deltaTime)
 {
 	for (auto e = enemies.begin(); e != enemies.end();)
 	{
-		(*e)->MoveBy(0, deltaTime.asSeconds() * (*e)->Speed);
+		(*e)->UpdateEnemy(deltaTime);
+		
+		Enemy* pe = &**e;
+		ShootingEnemy* se = dynamic_cast<ShootingEnemy*>(pe);
+		if (se != nullptr)
+			if (se->ShootRocket())
+				EnemyShoot(se->GetPosition());
 
 		// remove enemy
 		if ((*e)->GetPosition().y > SCREEN_HEIGHT + ENEMY_SIZE) // TODO number (enemy size may vary in future)
@@ -88,6 +105,13 @@ void Invaders::UpdateEnemies(sf::Time deltaTime)
 		else
 			++e;
 	}
+}
+
+void Invaders::EnemyShoot(sf::Vector2f position)
+{
+	Rocket r(-ROCKET_SPEED);
+	r.SetPosition(position);
+	enemyRockets.push_back(r);
 }
 
 void Invaders::UpdateRocketsCollisions()
@@ -112,12 +136,28 @@ void Invaders::UpdateRocketsCollisions()
 		if(r != rockets.end())
 			++r;
 	}
+
+	for (auto r = enemyRockets.begin(); r != enemyRockets.end();)
+	{
+		sf::Rect<float> intersection;
+		if (player.BoundingBox().intersects(r->BoundingBox(), intersection)) // rocket hits enemy
+		{
+			Explosion expl(Center(intersection));
+			explosions.push_back(expl);
+			r = enemyRockets.erase(r); // TODO possible to swap with last and delete faster
+			break;
+		}
+		else
+			++r;
+	}
 }
 
 void Invaders::GenerateEnemy()
 {
-	std::unique_ptr<Enemy> e = std::make_unique<Enemy>();
-	e->SetPosition(sf::Vector2f(RandomNumber(ENEMY_SIZE / 2, SCREEN_WIDTH + 1), 0)); // TODO number (enemy size may vary in future)
+	int pos_x = RandomNumber(ENEMY_SIZE / 2, SCREEN_WIDTH + 1);
+	std::unique_ptr<Enemy> e = std::make_unique<ShootingEnemy>(pos_x);
+	//e->SetPosition(sf::Vector2f(pos_x, 0)); // TODO number (enemy size may vary in future)
+	std::cout << "Generated ShootingEnemy on x=" << pos_x << std::endl;
 	enemies.push_back(std::move(e));
 }
 
@@ -138,11 +178,13 @@ void Invaders::Draw(sf::RenderWindow & window)
 {
 	for (auto && r : rockets)
 		r.Draw(window);
+	for (auto && r : enemyRockets)
+		r.Draw(window);
 	for (auto && e : enemies)
 		e->Draw(window);
+	player.Draw(window);
 	for (auto && e : explosions)
 		e.Draw(window);
-	player.Draw(window);
 }
 
 void Invaders::Pause()

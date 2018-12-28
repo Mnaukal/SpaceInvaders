@@ -20,6 +20,8 @@ public:
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
 	virtual sf::Rect<float> BoundingBox() override;
+	// new methods
+	virtual void UpdateEnemy(sf::Time deltaTime) = 0;
 };
 #endif
 
