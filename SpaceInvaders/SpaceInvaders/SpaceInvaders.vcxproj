@@ -138,10 +138,12 @@
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="Invaders.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rocket.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.hpp" />
@@ -153,6 +155,7 @@
     <ClInclude Include="InvadersConstants.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Rocket.hpp" />
+    <ClInclude Include="UserInterface.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

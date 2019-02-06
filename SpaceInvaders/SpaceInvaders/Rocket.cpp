@@ -26,8 +26,8 @@ void Rocket::Collide(GameObject * other, sf::FloatRect intersection)
 	if (e != nullptr)
 	{
 		std::unique_ptr<Explosion> expl = std::make_unique<Explosion>(Center(intersection));
-		GameObjectManager::getInstance().AddGameObject(std::move(expl));
-		GameObjectManager::getInstance().RemoveGameObject(other);
+		GameObjectManager::getInstance().AddUIObject(std::move(expl));
+		e->RemoveEnemy();
 		GameObjectManager::getInstance().RemoveGameObject(this);
 	}
 }
@@ -54,7 +54,7 @@ void Explosion::Draw(sf::RenderWindow & window)
 void Explosion::Update(sf::Time deltaTime)
 {
 	if(Animate(deltaTime))
-		GameObjectManager::getInstance().RemoveGameObject(this);
+		GameObjectManager::getInstance().RemoveUIObject(this);
 }
 
 sf::Rect<float> Explosion::BoundingBox()

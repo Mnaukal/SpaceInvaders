@@ -14,8 +14,10 @@ class Player : public GameObject
 {
 private:
 	sf::CircleShape shape;
+	float shootTime;
 public:
 	float Speed = PLAYER_SPEED;
+	float energy = 1.f;
 	Player();
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;

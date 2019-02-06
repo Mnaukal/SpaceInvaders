@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player() : shape(PLAYER_SIZE, 3) {
+Player::Player() : shape(PLAYER_SIZE, 3), shootTime(0) {
 	shape.setFillColor(sf::Color::Green);
 	shape.setOrigin(shape.getRadius(), shape.getRadius());
 };
@@ -29,11 +29,20 @@ void Player::Update(sf::Time deltaTime)
 	}
 
 	// shooting
+	if (shootTime > 0)
+		shootTime -= deltaTime.asSeconds();
+	energy = std::min(energy + PLAYER_ENERGY_SHOOT * deltaTime.asSeconds(), 1.f);
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) // TODO timing
 	{
-		std::unique_ptr<Rocket> r = std::make_unique<Rocket>(ROCKET_SPEED);
-		r->SetPosition(GetPosition());
-		GameObjectManager::getInstance().AddGameObject(std::move(r));
+		if (shootTime <= 0 && energy > PLAYER_ENERGY_SHOOT)
+		{
+			std::unique_ptr<Rocket> r = std::make_unique<Rocket>(ROCKET_SPEED);
+			r->SetPosition(GetPosition());
+			GameObjectManager::getInstance().AddGameObject(std::move(r));
+			shootTime = PLAYER_MIN_SHOOT_TIME;
+			energy -= PLAYER_ENERGY_SHOOT;
+		}
 	}
 }
 

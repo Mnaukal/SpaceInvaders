@@ -5,32 +5,11 @@ Invaders::Invaders() : timer(sf::Time::Zero) {
 
 	std::unique_ptr<Player> p = std::make_unique<Player>();
 	p->SetPosition(sf::Vector2f(PLAYER_START_POSITION_X, PLAYER_START_POSITION_Y)); 
-	gameObjects.push_back(std::move(p));
-}
+	GameObjectManager::getInstance().player = &*p;
+	GameObjectManager::getInstance().gameObjects.push_back(std::move(p));
 
-void Invaders::AddGameObjects()
-{
-	for (size_t i = 0; i < GameObjectManager::getInstance().AddedGameObjects.size(); i++)
-	{
-		gameObjects.push_back(std::move(GameObjectManager::getInstance().AddedGameObjects[i]));
-	}
-	GameObjectManager::getInstance().AddedGameObjects.clear();
-}
-
-void Invaders::RemoveGameObjects()
-{
-	for (auto r : GameObjectManager::getInstance().RemovedGameObjects)
-	{
-		auto go = std::find_if(gameObjects.begin(), gameObjects.end(), [r](const std::unique_ptr<GameObject>& p) {
-			return p.get() == r;
-		});
-		if (go == gameObjects.end()) continue;
-
-		go->swap(gameObjects.back());
-		gameObjects.back().reset();
-		gameObjects.pop_back();
-	}
-	GameObjectManager::getInstance().RemovedGameObjects.clear();
+	std::unique_ptr<EnergyBar> eb = std::make_unique<EnergyBar>(sf::Rect<int>(ENERGY_BAR_X, ENERGY_BAR_Y, ENERGY_BAR_WIDTH, ENERGY_BAR_HEIGHT));
+	GameObjectManager::getInstance().AddUIObject(std::move(eb));
 }
 
 void Invaders::Update(sf::Time deltaTime)
@@ -38,9 +17,14 @@ void Invaders::Update(sf::Time deltaTime)
 	if (paused)
 		return;
 
-	for (auto && go : gameObjects)
+	for (auto && go : GameObjectManager::getInstance().gameObjects)
 	{
 		go->Update(deltaTime);
+	}
+	for (auto && go : GameObjectManager::getInstance().UIobjects)
+	{
+		if(go != nullptr)
+			go->Update(deltaTime);
 	}
 
 	UpdateCollisions();
@@ -52,22 +36,21 @@ void Invaders::Update(sf::Time deltaTime)
 		timer = sf::seconds(RandomNumber(0, 3));
 	}
 
-	RemoveGameObjects();
-	AddGameObjects();
+	GameObjectManager::getInstance().Update();
 }
 
 void Invaders::UpdateCollisions()
 {
-	for (size_t i = 0; i < gameObjects.size(); i++)
+	for (size_t i = 0; i < GameObjectManager::getInstance().gameObjects.size(); i++)
 	{
-		for (size_t j = 0; j < gameObjects.size(); j++)
+		for (size_t j = 0; j < GameObjectManager::getInstance().gameObjects.size(); j++)
 		{
 			if (i == j) continue;
 
 			sf::Rect<float> intersection;
-			if (gameObjects[i]->BoundingBox().intersects(gameObjects[j]->BoundingBox(), intersection)) // rocket hits enemy
+			if (GameObjectManager::getInstance().gameObjects[i]->BoundingBox().intersects(GameObjectManager::getInstance().gameObjects[j]->BoundingBox(), intersection)) // rocket hits enemy
 			{
-				gameObjects[i]->Collide(&*gameObjects[j], intersection);
+				GameObjectManager::getInstance().gameObjects[i]->Collide(&*GameObjectManager::getInstance().gameObjects[j], intersection);
 			}
 		}
 	}
@@ -89,7 +72,11 @@ bool Invaders::HandleEvent(const sf::Event & event)
 
 void Invaders::Draw(sf::RenderWindow & window)
 {
-	for (auto && go : gameObjects)
+	for (auto && go : GameObjectManager::getInstance().gameObjects)
+	{
+		go->Draw(window);
+	}
+	for (auto && go : GameObjectManager::getInstance().UIobjects)
 	{
 		go->Draw(window);
 	}

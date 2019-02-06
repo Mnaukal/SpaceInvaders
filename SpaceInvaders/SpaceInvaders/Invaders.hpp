@@ -13,6 +13,7 @@ Invaders.hpp - main game code
 #include "InvadersConstants.hpp"
 #include "Enemies.hpp"
 #include "GameObjectManager.hpp"
+#include "UserInterface.hpp"
 #include <vector>
 #include <iostream>
 
@@ -20,7 +21,6 @@ class Invaders : public Game
 {
 private:
 	bool paused = false;
-	std::vector<std::unique_ptr<GameObject>> gameObjects;
 	sf::Time timer;
 public:
 	Invaders();
@@ -33,8 +33,6 @@ public:
 	virtual void SaveAndExit() override;
 	virtual sf::View Resize(unsigned width, unsigned height) override;
 private:
-	void AddGameObjects();
-	void RemoveGameObjects();
 	void UpdateCollisions();
 	void GenerateEnemy();
 };

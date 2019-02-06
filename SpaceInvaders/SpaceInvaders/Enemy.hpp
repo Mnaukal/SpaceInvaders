@@ -14,12 +14,11 @@ class Enemy : public GameObject
 private:
 	sf::RectangleShape shape;
 	float Size;
-protected:
-	void RemoveEnemy();
 public:
 	float Speed = ENEMY_SPEED;
 	Enemy();
 	Enemy(float speed) : Enemy() { Speed = speed; };
+	virtual void RemoveEnemy();
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
 	virtual sf::Rect<float> BoundingBox() override;

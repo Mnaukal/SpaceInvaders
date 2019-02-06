@@ -16,7 +16,9 @@ static constexpr float PLAYER_SIZE = 50.f;  // size of player sprite
 static constexpr float PLAYER_SPEED = 300.f; // movement speed (pixels/s)
 static constexpr float PLAYER_START_POSITION_X = SCREEN_WIDTH / 2; // player starts at horizontal center of screen
 static constexpr float PLAYER_START_POSITION_Y = SCREEN_HEIGHT - PLAYER_SIZE / 2; // player starts at down edge of screen
-
+static constexpr float PLAYER_MIN_SHOOT_TIME = 0.2f; // time between two rockets shot by player
+static constexpr float PLAYER_ENERGY_SHOOT = 0.15f; // how much energy is needed for each shot
+static constexpr float PLAYER_ENERGY_RESTORE_RATE = 0.3f; // time between two rockets shot by player
 
 // rockets
 static constexpr float ROCKET_SIZE_X = 10.f; // size of rocket sprite
@@ -41,5 +43,13 @@ static constexpr int SHOOTING_ENEMY_MAX_Y_POSITION = 300; // distance of the Sho
 static constexpr int SHOOTING_ENEMY_MIN_Y_POSITION = (int)(ENEMY_SIZE / 2) + 10; // distance of the ShootingEnemy from the top of screen
 static constexpr int SHOOTING_ENEMY_MAX_ROCKET_TIME = 10; // time between shooting rockets (seconds)
 static constexpr int SHOOTING_ENEMY_MIN_ROCKET_TIME = 1; // time between shooting rockets (seconds)
+
+// UI
+// Energy Bar
+static constexpr int ENERGY_BAR_WIDTH = 150;
+static constexpr int ENERGY_BAR_HEIGHT = 30;
+static constexpr int ENERGY_BAR_X = SCREEN_WIDTH - ENERGY_BAR_WIDTH - 10;
+static constexpr int ENERGY_BAR_Y = 10;
+
 
 #endif
