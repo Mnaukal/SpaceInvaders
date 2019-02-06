@@ -26,6 +26,8 @@ protected:
 	sf::Vector2f position;
 public:
 	virtual void Draw(sf::RenderWindow & window) = 0;
+	virtual void Update(sf::Time deltaTime) = 0;
+	virtual void Collide(GameObject* other, sf::FloatRect intersection) {}
 	void MoveBy(float x, float y) { position.x += x; position.y += y; };
 	sf::Vector2f GetPosition() const { return position; };
 	void SetPosition(sf::Vector2f newPosition) { position = newPosition; };

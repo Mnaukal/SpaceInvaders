@@ -1,5 +1,10 @@
 #include "Enemy.hpp"
 
+void Enemy::RemoveEnemy()
+{
+	GameObjectManager::getInstance().RemoveGameObject(this);
+}
+
 Enemy::Enemy() : Size(ENEMY_SIZE), shape(sf::Vector2f(ENEMY_SIZE, ENEMY_SIZE))
 {
 	shape.setFillColor(sf::Color::Red);
@@ -16,3 +21,4 @@ sf::Rect<float> Enemy::BoundingBox()
 {
 	return sf::Rect<float>(position.x - Size/2, position.y - Size/2, Size, Size);
 }
+

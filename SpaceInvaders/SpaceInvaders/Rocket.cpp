@@ -11,6 +11,27 @@ void Rocket::Draw(sf::RenderWindow & window)
 	window.draw(shape);
 }
 
+void Rocket::Update(sf::Time deltaTime)
+{
+	MoveBy(0, -deltaTime.asSeconds() * Speed);
+
+	// remove rocket
+	if (GetPosition().y < 0 - ROCKET_SIZE_Y / 2 || GetPosition().y > SCREEN_HEIGHT + ROCKET_SIZE_Y / 2)
+		GameObjectManager::getInstance().RemoveGameObject(this);
+}
+
+void Rocket::Collide(GameObject * other, sf::FloatRect intersection)
+{
+	Enemy* e = dynamic_cast<Enemy*>(other);
+	if (e != nullptr)
+	{
+		std::unique_ptr<Explosion> expl = std::make_unique<Explosion>(Center(intersection));
+		GameObjectManager::getInstance().AddGameObject(std::move(expl));
+		GameObjectManager::getInstance().RemoveGameObject(other);
+		GameObjectManager::getInstance().RemoveGameObject(this);
+	}
+}
+
 sf::Rect<float> Rocket::BoundingBox()
 {
 	return sf::Rect<float>(position.x - ROCKET_SIZE_X / 2, position.y - ROCKET_SIZE_Y / 2, ROCKET_SIZE_X, ROCKET_SIZE_Y);
@@ -30,6 +51,12 @@ void Explosion::Draw(sf::RenderWindow & window)
 	window.draw(shape);
 }
 
+void Explosion::Update(sf::Time deltaTime)
+{
+	if(Animate(deltaTime))
+		GameObjectManager::getInstance().RemoveGameObject(this);
+}
+
 sf::Rect<float> Explosion::BoundingBox()
 {
 	return sf::Rect<float>(position.x, position.y, 0, 0);
@@ -38,6 +65,11 @@ sf::Rect<float> Explosion::BoundingBox()
 void Explosion::DoAnimation(float progress)
 {
 	scale = progress * EXPLOSION_ANIMATION_SCALING_SPEED;
-	shape.setFillColor(sf::Color(255, 255, 0, 255 * (1 - progress)));
+	shape.setFillColor(sf::Color(255, 255, 0, (sf::Uint8)(255 * (1 - progress))));
 	shape.setScale(sf::Vector2f(scale, scale));
+}
+
+void EnemyRocket::Collide(GameObject * other, sf::FloatRect intersection)
+{
+	// TODO -> kill player
 }

@@ -7,12 +7,14 @@ Enemies.hpp - different types of enemies
 
 #include "Enemy.hpp"
 #include "Common.hpp"
+#include "Rocket.hpp"
+#include "GameObjectManager.hpp"
 #include <algorithm>
 
 class SimpleEnemy : public Enemy
 {
 	// Inherited via Enemy
-	virtual void UpdateEnemy(sf::Time deltaTime) override;
+	virtual void Update(sf::Time deltaTime) override;
 };
 
 class MovingEnemy : public Enemy
@@ -29,8 +31,8 @@ public:
 		HorizontalSpeed = RandomNumber(0, MOVING_ENEMY_MAX_HORIZONTAL_SPEED);
 		HorizontalRange = RandomNumber(MOVING_ENEMY_MIN_HORIZONTAL_RANGE, MOVING_ENEMY_MAX_HORIZONTAL_RANGE);
 	};
-	// Inherited via Enemy
-	virtual void UpdateEnemy(sf::Time deltaTime) override;
+	// Inherited via GameObject
+	virtual void Update(sf::Time deltaTime) override;
 protected:
 	// new methods
 	virtual float MovementX(sf::Time deltaTime);
@@ -45,17 +47,14 @@ public:
 	ShootingEnemy(float pos_x) : MovingEnemy(pos_x) {
 		HorizontalSpeed = RandomNumber(0, SHOOTING_ENEMY_MAX_HORIZONTAL_SPEED);
 		HorizontalRange = RandomNumber(SHOOTING_ENEMY_MIN_HORIZONTAL_RANGE, SHOOTING_ENEMY_MAX_HORIZONTAL_RANGE);
-		SetPosition(sf::Vector2f(pos_x, RandomNumber(SHOOTING_ENEMY_MIN_Y_POSITION, SHOOTING_ENEMY_MAX_Y_POSITION)));
+		SetPosition(sf::Vector2f(pos_x, (float)RandomNumber(SHOOTING_ENEMY_MIN_Y_POSITION, SHOOTING_ENEMY_MAX_Y_POSITION)));
 		RocketTimer = GetRocketTime();
 	};
-	// Inherited via MovingEnemy
-	virtual void UpdateEnemy(sf::Time deltaTime) override;
+	// Inherited via GameObject
+	virtual void Update(sf::Time deltaTime) override;
 protected:
 	// Inherited via MovingEnemy
 	virtual float MovementY(sf::Time deltaTime) override { return 0; };
-public:
-	// new methods
-	bool ShootRocket();
 protected:
 	// new methods
 	float GetRocketTime() { return RandomNumber(SHOOTING_ENEMY_MIN_ROCKET_TIME, SHOOTING_ENEMY_MAX_ROCKET_TIME); };

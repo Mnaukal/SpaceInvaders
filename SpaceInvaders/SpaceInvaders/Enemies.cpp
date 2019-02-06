@@ -1,13 +1,19 @@
 #include "Enemies.hpp"
 
-void SimpleEnemy::UpdateEnemy(sf::Time deltaTime)
+void SimpleEnemy::Update(sf::Time deltaTime)
 {
 	MoveBy(0, deltaTime.asSeconds() * Speed);
+
+	if (GetPosition().y > SCREEN_HEIGHT + ENEMY_SIZE)
+		RemoveEnemy();
 }
 
-void MovingEnemy::UpdateEnemy(sf::Time deltaTime)
+void MovingEnemy::Update(sf::Time deltaTime)
 {
 	MoveBy(MovementX(deltaTime), MovementY(deltaTime));
+
+	if (GetPosition().y > SCREEN_HEIGHT + ENEMY_SIZE)
+		RemoveEnemy();
 }
 
 float  MovingEnemy::MovementX(sf::Time deltaTime)
@@ -33,18 +39,19 @@ float MovingEnemy::MovementY(sf::Time deltaTime)
 	return deltaTime.asSeconds() * Speed;
 }
 
-void ShootingEnemy::UpdateEnemy(sf::Time deltaTime)
+void ShootingEnemy::Update(sf::Time deltaTime)
 {
 	RocketTimer -= deltaTime.asSeconds();
-	MoveBy(MovementX(deltaTime), MovementY(deltaTime));
-}
-
-bool ShootingEnemy::ShootRocket()
-{
 	if (RocketTimer <= 0)
 	{
 		RocketTimer = GetRocketTime();
-		return true;
+		std::unique_ptr<EnemyRocket> r = std::make_unique<EnemyRocket>(ROCKET_SPEED);
+		r->SetPosition(GetPosition());
+		GameObjectManager::getInstance().AddGameObject(std::move(r));
 	}
-	return false;
+
+	MoveBy(MovementX(deltaTime), MovementY(deltaTime));
+
+	if (GetPosition().y > SCREEN_HEIGHT + ENEMY_SIZE)
+		RemoveEnemy();
 }

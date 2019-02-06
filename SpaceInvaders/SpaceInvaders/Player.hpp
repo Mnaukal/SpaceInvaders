@@ -6,7 +6,9 @@ Player.hpp - code for user controlled player
 #define player_hpp_
 
 #include "Game.hpp"
+#include "Rocket.hpp"
 #include "InvadersConstants.hpp"
+#include "GameObjectManager.hpp"
 
 class Player : public GameObject
 {
@@ -17,6 +19,7 @@ public:
 	Player();
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
+	virtual void Update(sf::Time deltaTime) override;
 	virtual sf::Rect<float> BoundingBox() override;
 };
 #endif

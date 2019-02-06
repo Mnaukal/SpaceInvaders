@@ -7,6 +7,9 @@ Rocket.hpp - code for rockets shot by player
 
 #include "Game.hpp"
 #include "InvadersConstants.hpp"
+#include "GameObjectManager.hpp"
+#include "Enemy.hpp"
+#include "Common.hpp"
 
 class Rocket : public GameObject
 {
@@ -18,7 +21,15 @@ public:
 	Rocket(float speed) : Rocket() { Speed = speed; };
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
+	virtual void Update(sf::Time deltaTime) override;
+	virtual void Collide(GameObject* other, sf::FloatRect intersection) override;
 	virtual sf::Rect<float> BoundingBox() override;
+};
+
+class EnemyRocket : public Rocket {
+public:
+	EnemyRocket(float speed) : Rocket(-speed) {};
+	virtual void Collide(GameObject* other, sf::FloatRect intersection) override;
 };
 
 class Explosion : public GameObject, public Animated
@@ -30,6 +41,7 @@ public:
 	Explosion(sf::Vector2f pos);
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
+	virtual void Update(sf::Time deltaTime) override;
 	virtual sf::Rect<float> BoundingBox() override;
 	// Inherited via Animated
 	virtual void DoAnimation(float progress) override;

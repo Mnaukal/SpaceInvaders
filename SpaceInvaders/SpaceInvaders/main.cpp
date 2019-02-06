@@ -26,7 +26,7 @@ int main()
 			case sf::Event::Resized:
 			{
 				// TODO
-				if (window.getView().getSize().x == event.size.width) // changed height
+				if (window.getSize().x == event.size.width) // changed height
 					event.size.width = event.size.height * 16 / 9;
 				else
 					event.size.height = event.size.width * 9 / 16;

@@ -7,12 +7,15 @@ Enemy.hpp - common code for enemies
 
 #include "Game.hpp"
 #include "InvadersConstants.hpp"
+#include "GameObjectManager.hpp"
 
 class Enemy : public GameObject
 {
 private:
 	sf::RectangleShape shape;
 	float Size;
+protected:
+	void RemoveEnemy();
 public:
 	float Speed = ENEMY_SPEED;
 	Enemy();
@@ -20,8 +23,6 @@ public:
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
 	virtual sf::Rect<float> BoundingBox() override;
-	// new methods
-	virtual void UpdateEnemy(sf::Time deltaTime) = 0;
 };
 #endif
 

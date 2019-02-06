@@ -12,6 +12,7 @@ Invaders.hpp - main game code
 #include "Common.hpp"
 #include "InvadersConstants.hpp"
 #include "Enemies.hpp"
+#include "GameObjectManager.hpp"
 #include <vector>
 #include <iostream>
 
@@ -19,12 +20,7 @@ class Invaders : public Game
 {
 private:
 	bool paused = false;
-	// game objects
-	Player player;
-	std::vector<Rocket> rockets;
-	std::vector<Rocket> enemyRockets;
-	std::vector<Explosion> explosions;
-	std::vector<std::unique_ptr<Enemy>> enemies;
+	std::vector<std::unique_ptr<GameObject>> gameObjects;
 	sf::Time timer;
 public:
 	Invaders();
@@ -37,13 +33,9 @@ public:
 	virtual void SaveAndExit() override;
 	virtual sf::View Resize(unsigned width, unsigned height) override;
 private:
-	void UpdatePlayer(sf::Time deltaTime);
-	void UpdateRockets(sf::Time deltaTime);
-	void UpdateExplosions(sf::Time deltaTime);
-	void PlayerShoot();
-	void UpdateEnemies(sf::Time deltaTime);
-	void EnemyShoot(sf::Vector2f position);
-	void UpdateRocketsCollisions();
+	void AddGameObjects();
+	void RemoveGameObjects();
+	void UpdateCollisions();
 	void GenerateEnemy();
 };
 

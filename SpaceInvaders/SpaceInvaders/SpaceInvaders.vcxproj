@@ -148,6 +148,7 @@
     <ClInclude Include="Enemies.hpp" />
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="GameObjectManager.hpp" />
     <ClInclude Include="Invaders.hpp" />
     <ClInclude Include="InvadersConstants.hpp" />
     <ClInclude Include="Player.hpp" />
