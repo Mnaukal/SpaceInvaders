@@ -2,12 +2,14 @@
 #include <iostream>
 #include "Game.hpp"
 #include "Invaders.hpp"
+#include "TitleScreen.hpp"
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Space Invaders!");
 	sf::Clock clock;
-	std::unique_ptr<Game> game = std::make_unique<Invaders>();
+	//std::unique_ptr<Game> game = std::make_unique<Invaders>();
+	std::unique_ptr<Game> game = std::make_unique<TitleScreen>();
 
 	while (window.isOpen())
 	{
@@ -53,6 +55,9 @@ int main()
 		window.clear();
 		game->Draw(window);
 		window.display();
+
+		if (game->WantLoadLevel())
+			game = std::move(game->LoadLevel());
 	}
 
 	return 0;

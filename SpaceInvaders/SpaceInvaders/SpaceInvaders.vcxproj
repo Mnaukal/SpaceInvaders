@@ -143,6 +143,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rocket.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,7 +156,11 @@
     <ClInclude Include="InvadersConstants.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Rocket.hpp" />
+    <ClInclude Include="TitleScreen.hpp" />
     <ClInclude Include="UserInterface.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="data\font\MajorMonoDisplay-Regular.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

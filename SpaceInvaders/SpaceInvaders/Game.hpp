@@ -18,6 +18,8 @@ public:
 	virtual void Resume() = 0;
 	virtual void SaveAndExit() = 0;
 	virtual sf::View Resize(unsigned width, unsigned height) = 0;
+	virtual bool WantLoadLevel() { return false; }
+	virtual std::unique_ptr<Game> LoadLevel() { return nullptr; }
 };
 
 class GameObject 
