@@ -2,7 +2,7 @@
 
 TitleScreen::TitleScreen()
 {
-	if (!font.loadFromFile("data/font/MajorMonoDisplay-Regular.ttf"))
+	if (!font.loadFromFile(FONT_PATH))
 	{
 		std::cout << "Error loading font" << std::endl;
 	}

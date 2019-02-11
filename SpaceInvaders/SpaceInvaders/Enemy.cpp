@@ -3,6 +3,7 @@
 void Enemy::RemoveEnemy()
 {
 	GameObjectManager::getInstance().RemoveGameObject(this);
+	GameObjectManager::getInstance().player->Score += 100; // TODO number
 }
 
 Enemy::Enemy() : Size(ENEMY_SIZE), shape(sf::Vector2f(ENEMY_SIZE, ENEMY_SIZE))

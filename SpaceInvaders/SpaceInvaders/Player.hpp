@@ -18,6 +18,7 @@ private:
 public:
 	float Speed = PLAYER_SPEED;
 	float energy = 1.f;
+	int Score = 0;
 	Player();
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;

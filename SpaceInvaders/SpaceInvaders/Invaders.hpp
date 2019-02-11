@@ -22,6 +22,8 @@ class Invaders : public Game
 private:
 	bool paused = false;
 	sf::Time timer;
+	sf::Font font;
+	PausedText pausedOverlay;
 public:
 	Invaders();
 	// Inherited via Game

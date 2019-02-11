@@ -1,7 +1,12 @@
 #include "Invaders.hpp"
 
-Invaders::Invaders() : timer(sf::Time::Zero) {
+Invaders::Invaders() : timer(sf::Time::Zero), pausedOverlay(font) {
 	InitRandom();
+
+	if (!font.loadFromFile(FONT_PATH))
+	{
+		std::cout << "Error loading font" << std::endl;
+	}
 
 	std::unique_ptr<Player> p = std::make_unique<Player>();
 	p->SetPosition(sf::Vector2f(PLAYER_START_POSITION_X, PLAYER_START_POSITION_Y)); 
@@ -10,6 +15,8 @@ Invaders::Invaders() : timer(sf::Time::Zero) {
 
 	std::unique_ptr<EnergyBar> eb = std::make_unique<EnergyBar>(sf::Rect<int>(ENERGY_BAR_X, ENERGY_BAR_Y, ENERGY_BAR_WIDTH, ENERGY_BAR_HEIGHT));
 	GameObjectManager::getInstance().AddUIObject(std::move(eb));
+	std::unique_ptr<ScoreText> st = std::make_unique<ScoreText>(sf::Rect<int>(SCORE_TEXT_X, SCORE_TEXT_Y, SCORE_TEXT_WIDTH, SCORE_TEXT_HEIGHT), font);
+	GameObjectManager::getInstance().AddUIObject(std::move(st));
 }
 
 void Invaders::Update(sf::Time deltaTime)
@@ -80,6 +87,9 @@ void Invaders::Draw(sf::RenderWindow & window)
 	{
 		go->Draw(window);
 	}
+
+	if (paused)
+		pausedOverlay.Draw(window);
 }
 
 void Invaders::Pause()

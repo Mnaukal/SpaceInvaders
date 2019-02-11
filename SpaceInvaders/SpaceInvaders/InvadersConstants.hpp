@@ -45,11 +45,19 @@ static constexpr int SHOOTING_ENEMY_MAX_ROCKET_TIME = 10; // time between shooti
 static constexpr int SHOOTING_ENEMY_MIN_ROCKET_TIME = 1; // time between shooting rockets (seconds)
 
 // UI
+// Font
+static std::string FONT_PATH = "data/font/MajorMonoDisplay-Regular.ttf";
+
 // Energy Bar
 static constexpr int ENERGY_BAR_WIDTH = 150;
 static constexpr int ENERGY_BAR_HEIGHT = 30;
 static constexpr int ENERGY_BAR_X = SCREEN_WIDTH - ENERGY_BAR_WIDTH - 10;
 static constexpr int ENERGY_BAR_Y = 10;
+// Score Text
+static constexpr int SCORE_TEXT_WIDTH = 150;
+static constexpr int SCORE_TEXT_HEIGHT = 30;
+static constexpr int SCORE_TEXT_X = 100;
+static constexpr int SCORE_TEXT_Y = 10;
 
 
 #endif
