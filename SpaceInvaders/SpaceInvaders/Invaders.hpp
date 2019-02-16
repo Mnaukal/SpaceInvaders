@@ -16,6 +16,7 @@ Invaders.hpp - main game code
 #include "UserInterface.hpp"
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 class Invaders : public Game
 {
@@ -26,7 +27,7 @@ private:
 	sf::Texture heart, heart_empty, player, simple_enemy, moving_enemy, shooting_enemy;
 	PausedText pausedOverlay;
 public:
-	Invaders();
+	Invaders(const std::string & filename); // filename = config file
 	// Inherited via Game
 	virtual void Update(sf::Time deltaTime) override;
 	virtual void Draw(sf::RenderWindow & window) override;
@@ -42,6 +43,7 @@ private:
 	void GenerateMovingEnemy();
 	void GenerateShootingEnemy();
 	void LoadTextures();
+	void LoadConfig(const std::string & filename);
 };
 
 #endif

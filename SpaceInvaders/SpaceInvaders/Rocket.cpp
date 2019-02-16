@@ -25,8 +25,12 @@ void Rocket::Collide(GameObject * other, sf::FloatRect intersection)
 	Enemy* e = dynamic_cast<Enemy*>(other);
 	if (e != nullptr)
 	{
+		// create explosion
 		std::unique_ptr<Explosion> expl = std::make_unique<Explosion>(Center(intersection));
 		GameObjectManager::getInstance().AddUIObject(std::move(expl));
+		// add score
+		GameObjectManager::getInstance().player->Score += e->EnemyScore();
+		// remove enemy and rocket
 		e->RemoveEnemy();
 		GameObjectManager::getInstance().RemoveGameObject(this);
 	}

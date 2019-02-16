@@ -13,15 +13,19 @@ class Enemy : public GameObject
 {
 private:
 	sf::Sprite sprite;
+protected:
 	int width, height;
+	int killScore = 100;
 public:
 	float Speed = ENEMY_SPEED;
 	Enemy(const sf::Texture & texture);
 	Enemy(const sf::Texture & texture, float speed) : Enemy(texture) { Speed = speed; };
-	virtual void RemoveEnemy();
+	virtual void RemoveEnemy(); // removes enemy
+	virtual int EnemyScore() = 0; // score points for killing
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
 	virtual sf::Rect<float> BoundingBox() override;
+	float GetWidth() { return width; }
 };
 #endif
 

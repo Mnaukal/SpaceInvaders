@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(const sf::Texture & texture) : shootTime(0) {
+Player::Player(const sf::Texture & texture) : shootTime(0), Speed(PLAYER_SPEED) {
 	sprite.setTexture(texture);
 	sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y);
 	width = texture.getSize().x;
@@ -19,21 +19,21 @@ void Player::Update(sf::Time deltaTime)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		float deltaX = deltaTime.asSeconds() * Speed;
-		if (GetPosition().x + deltaX < SCREEN_WIDTH)
+		if (GetPosition().x + deltaX < SCREEN_WIDTH - width / 2)
 			MoveBy(deltaX, 0);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		float deltaX = deltaTime.asSeconds() * Speed;
-		if (GetPosition().x - deltaX > 0)
+		if (GetPosition().x - deltaX > 0 + width / 2)
 			MoveBy(-deltaX, 0);
 	}
 
 	// shooting
 	if (shootTime > 0)
 		shootTime -= deltaTime.asSeconds();
-	energy = std::min(energy + PLAYER_ENERGY_SHOOT * deltaTime.asSeconds(), 1.f);
+	energy = std::min(energy + PLAYER_ENERGY_RESTORE_RATE * deltaTime.asSeconds(), 1.f);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{

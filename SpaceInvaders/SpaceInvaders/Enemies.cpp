@@ -22,13 +22,13 @@ float  MovingEnemy::MovementX(sf::Time deltaTime)
 	if (MovementDirection == Direction::Left)
 	{
 		deltaX = -HorizontalSpeed * deltaTime.asSeconds();
-		if (position.x + deltaX < std::max(0.f + ENEMY_SIZE / 2, OriginalPosition - HorizontalRange)) // TODO number (enemy size)
+		if (position.x + deltaX < std::max(0.f + width / 2, OriginalPosition - HorizontalRange))
 			MovementDirection = Direction::Right;
 	}
 	else
 	{
 		deltaX = HorizontalSpeed * deltaTime.asSeconds();
-		if (position.x + deltaX > std::min((float)SCREEN_WIDTH - ENEMY_SIZE / 2, OriginalPosition + HorizontalRange)) // TODO number (enemy size)
+		if (position.x + deltaX > std::min((float)SCREEN_WIDTH - width / 2, OriginalPosition + HorizontalRange))
 			MovementDirection = Direction::Left;
 	}
 	return deltaX;

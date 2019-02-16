@@ -57,5 +57,5 @@ std::unique_ptr<Game> TitleScreen::LoadLevel()
 	if (!loadGame)
 		return nullptr;
 
-	return std::make_unique<Invaders>();
+	return std::make_unique<Invaders>("easy.txt"); // TODO
 }

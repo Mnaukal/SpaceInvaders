@@ -17,7 +17,7 @@ private:
 	int width, height;
 	float shootTime;
 public:
-	float Speed = PLAYER_SPEED;
+	float Speed;
 	float energy = 1.f;
 	int Score = 0;
 	int lives = 2; // TODO

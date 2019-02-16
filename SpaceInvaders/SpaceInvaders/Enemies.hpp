@@ -17,6 +17,7 @@ public :
 	SimpleEnemy(const sf::Texture & texture) : Enemy(texture) {}
 	// Inherited via Enemy
 	virtual void Update(sf::Time deltaTime) override;
+	virtual int EnemyScore() override { return KILL_SCORE_SIMPLE; }
 };
 
 class MovingEnemy : public Enemy
@@ -35,6 +36,8 @@ public:
 	};
 	// Inherited via GameObject
 	virtual void Update(sf::Time deltaTime) override;
+	// Inherited via Enemy
+	virtual int EnemyScore() override { return KILL_SCORE_MOVING; }
 protected:
 	// new methods
 	virtual float MovementX(sf::Time deltaTime);
@@ -54,6 +57,8 @@ public:
 	};
 	// Inherited via GameObject
 	virtual void Update(sf::Time deltaTime) override;
+	// Inherited via Enemy
+	virtual int EnemyScore() override { return KILL_SCORE_SHOOTING; }
 protected:
 	// Inherited via MovingEnemy
 	virtual float MovementY(sf::Time deltaTime) override { return 0; };

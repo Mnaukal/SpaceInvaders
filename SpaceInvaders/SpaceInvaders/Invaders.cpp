@@ -1,7 +1,8 @@
 #include "Invaders.hpp"
 
-Invaders::Invaders() : timer(sf::Time::Zero), pausedOverlay(font) {
+Invaders::Invaders(const std::string & filename) : timer(sf::Time::Zero), pausedOverlay(font) {
 	InitRandom();
+	LoadConfig(filename);
 	LoadTextures();
 
 	std::unique_ptr<Player> p = std::make_unique<Player>(player);
@@ -49,6 +50,29 @@ void Invaders::LoadTextures()
 	}
 	heart.setSmooth(false);
 	heart_empty.setSmooth(false);
+}
+
+void Invaders::LoadConfig(const std::string & filename)
+{
+	std::ifstream input(CONFIG_PATH + filename);
+	if(!input)
+	{
+		std::cout << "Error loading config - " << filename << std::endl;
+		return;
+	}
+	int x;
+	float y;
+	// LIVES
+	input >> x;
+	PLAYER_LIVES = x;
+	SCORE_TEXT_X = PLAYER_LIVES * 44 + 20;
+	// SPEED
+	input >> y;
+	PLAYER_SPEED = y;
+	// ENERGY_RESORE
+	input >> y;
+	PLAYER_ENERGY_RESTORE_RATE = y;
+
 }
 
 void Invaders::Update(sf::Time deltaTime)
@@ -104,25 +128,25 @@ void Invaders::GenerateEnemy()
 
 void Invaders::GenerateSimpleEnemy()
 {
-	int pos_x = RandomNumber(0, SCREEN_WIDTH + 1);
+	int pos_x = RandomNumber(simple_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - simple_enemy.getSize().x / 2);
 	std::unique_ptr<Enemy> e = std::make_unique<SimpleEnemy>(simple_enemy);
-	e->SetPosition(sf::Vector2f(pos_x, 0)); // TODO number
+	e->SetPosition(sf::Vector2f(pos_x, 0));
 	std::cout << "Generated SimpleEnemy on x=" << pos_x << std::endl;
 	GameObjectManager::getInstance().AddGameObject(std::move(e));
 }
 
 void Invaders::GenerateMovingEnemy()
 {
-	int pos_x = RandomNumber(0, SCREEN_WIDTH + 1);
+	int pos_x = RandomNumber(moving_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - moving_enemy.getSize().x / 2);
 	std::unique_ptr<Enemy> e = std::make_unique<MovingEnemy>(moving_enemy, pos_x);
-	e->SetPosition(sf::Vector2f(pos_x, 0)); // TODO number
+	e->SetPosition(sf::Vector2f(pos_x, 0));
 	std::cout << "Generated MovingEnemy on x=" << pos_x << std::endl;
 	GameObjectManager::getInstance().AddGameObject(std::move(e));
 }
 
 void Invaders::GenerateShootingEnemy()
 {
-	int pos_x = RandomNumber(0, SCREEN_WIDTH + 1);
+	int pos_x = RandomNumber(shooting_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - shooting_enemy.getSize().x / 2);
 	std::unique_ptr<Enemy> e = std::make_unique<ShootingEnemy>(shooting_enemy, pos_x);
 	std::cout << "Generated ShootingEnemy on x=" << pos_x << std::endl;
 	GameObjectManager::getInstance().AddGameObject(std::move(e));
