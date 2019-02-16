@@ -6,20 +6,22 @@ void Enemy::RemoveEnemy()
 	GameObjectManager::getInstance().player->Score += 100; // TODO number
 }
 
-Enemy::Enemy() : Size(ENEMY_SIZE), shape(sf::Vector2f(ENEMY_SIZE, ENEMY_SIZE))
+Enemy::Enemy(const sf::Texture & texture)
 {
-	shape.setFillColor(sf::Color::Red);
-	shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
+	sprite.setTexture(texture);
+	sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+	width = texture.getSize().x;
+	height = texture.getSize().y;
 }
 
 void Enemy::Draw(sf::RenderWindow & window)
 {
-	shape.setPosition(position);
-	window.draw(shape);
+	sprite.setPosition(position);
+	window.draw(sprite);
 }
 
 sf::Rect<float> Enemy::BoundingBox()
 {
-	return sf::Rect<float>(position.x - Size/2, position.y - Size/2, Size, Size);
+	return sf::Rect<float>(position.x - width/2, position.y - height/2, width, height);
 }
 

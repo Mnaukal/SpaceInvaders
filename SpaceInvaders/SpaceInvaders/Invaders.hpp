@@ -23,7 +23,7 @@ private:
 	bool paused = false;
 	sf::Time timer;
 	sf::Font font;
-	sf::Texture heart, heart_empty;
+	sf::Texture heart, heart_empty, player, simple_enemy, moving_enemy, shooting_enemy;
 	PausedText pausedOverlay;
 public:
 	Invaders();
@@ -38,6 +38,10 @@ public:
 private:
 	void UpdateCollisions();
 	void GenerateEnemy();
+	void GenerateSimpleEnemy();
+	void GenerateMovingEnemy();
+	void GenerateShootingEnemy();
+	void LoadTextures();
 };
 
 #endif

@@ -12,10 +12,9 @@ static constexpr int SCREEN_WIDTH = 1280; // width of game window
 static constexpr int SCREEN_HEIGHT = 720; // height of game window
 
 // player
-static constexpr float PLAYER_SIZE = 50.f;  // size of player sprite
 static constexpr float PLAYER_SPEED = 300.f; // movement speed (pixels/s)
 static constexpr float PLAYER_START_POSITION_X = SCREEN_WIDTH / 2; // player starts at horizontal center of screen
-static constexpr float PLAYER_START_POSITION_Y = SCREEN_HEIGHT - PLAYER_SIZE / 2; // player starts at down edge of screen
+static constexpr float PLAYER_START_POSITION_Y = SCREEN_HEIGHT; // player starts at down edge of screen
 static constexpr float PLAYER_MIN_SHOOT_TIME = 0.2f; // time between two rockets shot by player
 static constexpr float PLAYER_ENERGY_SHOOT = 0.15f; // how much energy is needed for each shot
 static constexpr float PLAYER_ENERGY_RESTORE_RATE = 0.3f; // time between two rockets shot by player

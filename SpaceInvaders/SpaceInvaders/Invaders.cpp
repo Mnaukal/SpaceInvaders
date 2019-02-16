@@ -2,7 +2,23 @@
 
 Invaders::Invaders() : timer(sf::Time::Zero), pausedOverlay(font) {
 	InitRandom();
+	LoadTextures();
 
+	std::unique_ptr<Player> p = std::make_unique<Player>(player);
+	p->SetPosition(sf::Vector2f(PLAYER_START_POSITION_X, PLAYER_START_POSITION_Y)); 
+	GameObjectManager::getInstance().player = &*p;
+	GameObjectManager::getInstance().gameObjects.push_back(std::move(p));
+
+	std::unique_ptr<EnergyBar> eb = std::make_unique<EnergyBar>(sf::Rect<int>(ENERGY_BAR_X, ENERGY_BAR_Y, ENERGY_BAR_WIDTH, ENERGY_BAR_HEIGHT));
+	GameObjectManager::getInstance().AddUIObject(std::move(eb));
+	std::unique_ptr<ScoreText> st = std::make_unique<ScoreText>(sf::Rect<int>(SCORE_TEXT_X, SCORE_TEXT_Y, SCORE_TEXT_WIDTH, SCORE_TEXT_HEIGHT), font);
+	GameObjectManager::getInstance().AddUIObject(std::move(st));
+	std::unique_ptr<LivesDisplay> ld = std::make_unique<LivesDisplay>(heart, heart_empty);
+	GameObjectManager::getInstance().AddUIObject(std::move(ld));
+}
+
+void Invaders::LoadTextures()
+{
 	if (!font.loadFromFile(FONT_PATH))
 	{
 		std::cout << "Error loading font" << std::endl;
@@ -15,20 +31,24 @@ Invaders::Invaders() : timer(sf::Time::Zero), pausedOverlay(font) {
 	{
 		std::cout << "Error loading texture - heart_empty" << std::endl;
 	}
+	if (!player.loadFromFile(SPRITES_PATH + "player.png"))
+	{
+		std::cout << "Error loading texture - player" << std::endl;
+	}
+	if (!simple_enemy.loadFromFile(SPRITES_PATH + "simple_enemy.png"))
+	{
+		std::cout << "Error loading texture - simple_enemy" << std::endl;
+	}
+	if (!moving_enemy.loadFromFile(SPRITES_PATH + "moving_enemy.png"))
+	{
+		std::cout << "Error loading texture - moving_enemy" << std::endl;
+	}
+	if (!shooting_enemy.loadFromFile(SPRITES_PATH + "shooting_enemy.png"))
+	{
+		std::cout << "Error loading texture - shooting_enemy" << std::endl;
+	}
 	heart.setSmooth(false);
 	heart_empty.setSmooth(false);
-
-	std::unique_ptr<Player> p = std::make_unique<Player>();
-	p->SetPosition(sf::Vector2f(PLAYER_START_POSITION_X, PLAYER_START_POSITION_Y)); 
-	GameObjectManager::getInstance().player = &*p;
-	GameObjectManager::getInstance().gameObjects.push_back(std::move(p));
-
-	std::unique_ptr<EnergyBar> eb = std::make_unique<EnergyBar>(sf::Rect<int>(ENERGY_BAR_X, ENERGY_BAR_Y, ENERGY_BAR_WIDTH, ENERGY_BAR_HEIGHT));
-	GameObjectManager::getInstance().AddUIObject(std::move(eb));
-	std::unique_ptr<ScoreText> st = std::make_unique<ScoreText>(sf::Rect<int>(SCORE_TEXT_X, SCORE_TEXT_Y, SCORE_TEXT_WIDTH, SCORE_TEXT_HEIGHT), font);
-	GameObjectManager::getInstance().AddUIObject(std::move(st));
-	std::unique_ptr<LivesDisplay> ld = std::make_unique<LivesDisplay>(heart, heart_empty);
-	GameObjectManager::getInstance().AddUIObject(std::move(ld));
 }
 
 void Invaders::Update(sf::Time deltaTime)
@@ -77,9 +97,33 @@ void Invaders::UpdateCollisions()
 
 void Invaders::GenerateEnemy()
 {
-	int pos_x = RandomNumber((int)(ENEMY_SIZE / 2), SCREEN_WIDTH + 1);
-	std::unique_ptr<Enemy> e = std::make_unique<ShootingEnemy>((float)pos_x);
-	//e->SetPosition(sf::Vector2f(pos_x, 0)); // TODO number (enemy size may vary in future)
+	//GenerateSimpleEnemy();
+	GenerateMovingEnemy();
+	//GenerateShootingEnemy();
+}
+
+void Invaders::GenerateSimpleEnemy()
+{
+	int pos_x = RandomNumber(0, SCREEN_WIDTH + 1);
+	std::unique_ptr<Enemy> e = std::make_unique<SimpleEnemy>(simple_enemy);
+	e->SetPosition(sf::Vector2f(pos_x, 0)); // TODO number
+	std::cout << "Generated SimpleEnemy on x=" << pos_x << std::endl;
+	GameObjectManager::getInstance().AddGameObject(std::move(e));
+}
+
+void Invaders::GenerateMovingEnemy()
+{
+	int pos_x = RandomNumber(0, SCREEN_WIDTH + 1);
+	std::unique_ptr<Enemy> e = std::make_unique<MovingEnemy>(moving_enemy, pos_x);
+	e->SetPosition(sf::Vector2f(pos_x, 0)); // TODO number
+	std::cout << "Generated MovingEnemy on x=" << pos_x << std::endl;
+	GameObjectManager::getInstance().AddGameObject(std::move(e));
+}
+
+void Invaders::GenerateShootingEnemy()
+{
+	int pos_x = RandomNumber(0, SCREEN_WIDTH + 1);
+	std::unique_ptr<Enemy> e = std::make_unique<ShootingEnemy>(shooting_enemy, pos_x);
 	std::cout << "Generated ShootingEnemy on x=" << pos_x << std::endl;
 	GameObjectManager::getInstance().AddGameObject(std::move(e));
 }
@@ -100,9 +144,9 @@ bool Invaders::HandleEvent(const sf::Event & event)
 
 void Invaders::Draw(sf::RenderWindow & window)
 {
-	for (auto && go : GameObjectManager::getInstance().gameObjects)
+	for (auto it = GameObjectManager::getInstance().gameObjects.rbegin(); it != GameObjectManager::getInstance().gameObjects.rend(); ++it)
 	{
-		go->Draw(window);
+		(**it).Draw(window);
 	}
 	for (auto && go : GameObjectManager::getInstance().UIobjects)
 	{

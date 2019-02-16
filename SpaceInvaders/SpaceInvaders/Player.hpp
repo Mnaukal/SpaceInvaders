@@ -13,14 +13,15 @@ Player.hpp - code for user controlled player
 class Player : public GameObject
 {
 private:
-	sf::CircleShape shape;
+	sf::Sprite sprite;
+	int width, height;
 	float shootTime;
 public:
 	float Speed = PLAYER_SPEED;
 	float energy = 1.f;
 	int Score = 0;
 	int lives = 2; // TODO
-	Player();
+	Player(const sf::Texture & texture);
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
 	virtual void Update(sf::Time deltaTime) override;

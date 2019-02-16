@@ -12,12 +12,12 @@ Enemy.hpp - common code for enemies
 class Enemy : public GameObject
 {
 private:
-	sf::RectangleShape shape;
-	float Size;
+	sf::Sprite sprite;
+	int width, height;
 public:
 	float Speed = ENEMY_SPEED;
-	Enemy();
-	Enemy(float speed) : Enemy() { Speed = speed; };
+	Enemy(const sf::Texture & texture);
+	Enemy(const sf::Texture & texture, float speed) : Enemy(texture) { Speed = speed; };
 	virtual void RemoveEnemy();
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
