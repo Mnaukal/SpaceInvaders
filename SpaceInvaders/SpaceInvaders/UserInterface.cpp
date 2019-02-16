@@ -48,7 +48,7 @@ ScoreText::ScoreText(sf::Rect<int> position, const sf::Font & font)
 	text.setString("0000");
 	text.setCharacterSize(40);
 	text.setFillColor(sf::Color::White);
-	text.setPosition(position.left + 10, position.top + 10);
+	text.setPosition(position.left, position.top);
 }
 
 void ScoreText::Draw(sf::RenderWindow & window)
@@ -58,4 +58,28 @@ void ScoreText::Draw(sf::RenderWindow & window)
 	text.setString(ss.str());
 	//window.draw(background);
 	window.draw(text);
+}
+
+LivesDisplay::LivesDisplay(const sf::Texture & heart, const sf::Texture & heart_empty)
+	: hearts(PLAYER_LIVES), heart(heart), heart_empty(heart_empty)
+{
+	for (size_t i = 0; i < hearts.size(); i++)
+	{
+		hearts[i].setPosition(i * 44 + 10, 10);
+		hearts[i].setScale(3, 3);
+	}
+}
+
+void LivesDisplay::Draw(sf::RenderWindow & window)
+{
+	for (size_t i = 0; i < hearts.size() && i < GameObjectManager::getInstance().player->lives; i++)
+	{
+		hearts[i].setTexture(heart);
+		window.draw(hearts[i]);
+	}
+	for (size_t i = GameObjectManager::getInstance().player->lives; i < hearts.size(); i++)
+	{
+		hearts[i].setTexture(heart_empty);
+		window.draw(hearts[i]);
+	}
 }

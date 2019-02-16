@@ -41,6 +41,19 @@ private:
 	sf::Text text;
 public:
 	ScoreText(sf::Rect<int> position, const sf::Font & font);
+	// Inherited via GameObject
+	virtual void Draw(sf::RenderWindow & window) override;
+	virtual void Update(sf::Time deltaTime) {};
+	virtual sf::Rect<float> BoundingBox() { return sf::Rect<float>(); };
+};
+
+class LivesDisplay : public GameObject {
+private:
+	std::vector<sf::Sprite> hearts;
+	const sf::Texture & heart, heart_empty;
+public:
+	LivesDisplay(const sf::Texture & heart, const sf::Texture & heart_empty);
+	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
 	virtual void Update(sf::Time deltaTime) {};
 	virtual sf::Rect<float> BoundingBox() { return sf::Rect<float>(); };

@@ -7,6 +7,16 @@ Invaders::Invaders() : timer(sf::Time::Zero), pausedOverlay(font) {
 	{
 		std::cout << "Error loading font" << std::endl;
 	}
+	if (!heart.loadFromFile(SPRITES_PATH + "heart.png"))
+	{
+		std::cout << "Error loading texture - heart" << std::endl;
+	}
+	if (!heart_empty.loadFromFile(SPRITES_PATH + "heart_empty.png"))
+	{
+		std::cout << "Error loading texture - heart_empty" << std::endl;
+	}
+	heart.setSmooth(false);
+	heart_empty.setSmooth(false);
 
 	std::unique_ptr<Player> p = std::make_unique<Player>();
 	p->SetPosition(sf::Vector2f(PLAYER_START_POSITION_X, PLAYER_START_POSITION_Y)); 
@@ -17,6 +27,8 @@ Invaders::Invaders() : timer(sf::Time::Zero), pausedOverlay(font) {
 	GameObjectManager::getInstance().AddUIObject(std::move(eb));
 	std::unique_ptr<ScoreText> st = std::make_unique<ScoreText>(sf::Rect<int>(SCORE_TEXT_X, SCORE_TEXT_Y, SCORE_TEXT_WIDTH, SCORE_TEXT_HEIGHT), font);
 	GameObjectManager::getInstance().AddUIObject(std::move(st));
+	std::unique_ptr<LivesDisplay> ld = std::make_unique<LivesDisplay>(heart, heart_empty);
+	GameObjectManager::getInstance().AddUIObject(std::move(ld));
 }
 
 void Invaders::Update(sf::Time deltaTime)
@@ -74,6 +86,15 @@ void Invaders::GenerateEnemy()
 
 bool Invaders::HandleEvent(const sf::Event & event)
 {
+	if (event.type == sf::Event::KeyReleased)
+	{
+		if (event.key.code == sf::Keyboard::P)
+		{
+			paused = !paused;
+			return true;
+		}
+	}
+
 	return false;
 }
 

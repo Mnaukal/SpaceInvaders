@@ -23,6 +23,7 @@ private:
 	bool paused = false;
 	sf::Time timer;
 	sf::Font font;
+	sf::Texture heart, heart_empty;
 	PausedText pausedOverlay;
 public:
 	Invaders();

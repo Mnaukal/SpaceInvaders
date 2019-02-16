@@ -13,6 +13,7 @@ class Player;
 
 class GameObjectManager
 {
+	// singleton
 public:
 	static GameObjectManager& getInstance()
 	{

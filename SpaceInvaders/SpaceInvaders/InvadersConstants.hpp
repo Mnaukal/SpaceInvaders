@@ -19,6 +19,7 @@ static constexpr float PLAYER_START_POSITION_Y = SCREEN_HEIGHT - PLAYER_SIZE / 2
 static constexpr float PLAYER_MIN_SHOOT_TIME = 0.2f; // time between two rockets shot by player
 static constexpr float PLAYER_ENERGY_SHOOT = 0.15f; // how much energy is needed for each shot
 static constexpr float PLAYER_ENERGY_RESTORE_RATE = 0.3f; // time between two rockets shot by player
+static constexpr int PLAYER_LIVES = 3; // number of lives of player
 
 // rockets
 static constexpr float ROCKET_SIZE_X = 10.f; // size of rocket sprite
@@ -44,6 +45,9 @@ static constexpr int SHOOTING_ENEMY_MIN_Y_POSITION = (int)(ENEMY_SIZE / 2) + 10;
 static constexpr int SHOOTING_ENEMY_MAX_ROCKET_TIME = 10; // time between shooting rockets (seconds)
 static constexpr int SHOOTING_ENEMY_MIN_ROCKET_TIME = 1; // time between shooting rockets (seconds)
 
+// Sprites
+static std::string SPRITES_PATH = "data/sprites/";
+
 // UI
 // Font
 static std::string FONT_PATH = "data/font/MajorMonoDisplay-Regular.ttf";
@@ -54,10 +58,10 @@ static constexpr int ENERGY_BAR_HEIGHT = 30;
 static constexpr int ENERGY_BAR_X = SCREEN_WIDTH - ENERGY_BAR_WIDTH - 10;
 static constexpr int ENERGY_BAR_Y = 10;
 // Score Text
-static constexpr int SCORE_TEXT_WIDTH = 150;
+static constexpr int SCORE_TEXT_WIDTH = 140;
 static constexpr int SCORE_TEXT_HEIGHT = 30;
-static constexpr int SCORE_TEXT_X = 100;
-static constexpr int SCORE_TEXT_Y = 10;
+static constexpr int SCORE_TEXT_X = 150;
+static constexpr int SCORE_TEXT_Y = 0;
 
 
 #endif
