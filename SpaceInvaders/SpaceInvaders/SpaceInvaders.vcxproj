@@ -138,6 +138,7 @@
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyWave.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="Invaders.cpp" />
     <ClCompile Include="InvadersConstants.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="Common.hpp" />
     <ClInclude Include="Enemies.hpp" />
     <ClInclude Include="Enemy.hpp" />
+    <ClInclude Include="EnemyWave.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameObjectManager.hpp" />
     <ClInclude Include="Invaders.hpp" />

@@ -14,6 +14,7 @@ Invaders.hpp - main game code
 #include "Enemies.hpp"
 #include "GameObjectManager.hpp"
 #include "UserInterface.hpp"
+#include "EnemyWave.hpp"
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -26,6 +27,8 @@ private:
 	sf::Font font;
 	sf::Texture heart, heart_empty, player, simple_enemy, moving_enemy, shooting_enemy;
 	PausedText pausedOverlay;
+	std::vector<EnemyWave> enemy_waves;
+	int current_wave = 0;
 public:
 	Invaders(const std::string & filename); // filename = config file
 	// Inherited via Game

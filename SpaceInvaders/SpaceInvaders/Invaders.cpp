@@ -54,6 +54,8 @@ void Invaders::LoadTextures()
 
 void Invaders::LoadConfig(const std::string & filename)
 {
+	// TODO handle wrong input file
+
 	std::ifstream input(CONFIG_PATH + filename);
 	if(!input)
 	{
@@ -73,6 +75,38 @@ void Invaders::LoadConfig(const std::string & filename)
 	input >> y;
 	PLAYER_ENERGY_RESTORE_RATE = y;
 
+	// waves
+	std::string s;
+	input >> s;
+	if (!input || s != "WAVES:")
+	{
+		std::cout << "Error loading enemy waves - " << filename << std::endl;
+		return;
+	}
+	while (true)
+	{
+		int count;
+		std::string type;
+		float min_time, max_time;
+
+		input >> count;
+		input >> type;
+		input >> min_time;
+		input >> max_time;
+
+		if (!input)
+			break;
+
+		EnemyWave w;
+		w.count = count;
+		w.min_time = min_time;
+		w.max_time = max_time;
+		w.spawn_simple = type.find("S") != std::string::npos;
+		w.spawn_moving = type.find("M") != std::string::npos;
+		w.spawn_shooting = type.find("H") != std::string::npos;
+
+		enemy_waves.push_back(w);
+	}
 }
 
 void Invaders::Update(sf::Time deltaTime)
@@ -96,7 +130,7 @@ void Invaders::Update(sf::Time deltaTime)
 	if (timer <= sf::Time::Zero)
 	{
 		GenerateEnemy();
-		timer = sf::seconds(RandomNumber(0, 3));
+		timer = sf::seconds(enemy_waves[current_wave].GetRandomSpawnTime());
 	}
 
 	GameObjectManager::getInstance().Update();
@@ -121,14 +155,29 @@ void Invaders::UpdateCollisions()
 
 void Invaders::GenerateEnemy()
 {
-	//GenerateSimpleEnemy();
-	GenerateMovingEnemy();
-	//GenerateShootingEnemy();
+	switch (enemy_waves[current_wave].GetRandomSpawnType())
+	{
+	case EnemyWave::Type::Simple:
+		GenerateSimpleEnemy();
+		break;
+	case EnemyWave::Type::Moving:
+		GenerateMovingEnemy();
+		break;
+	case EnemyWave::Type::Shooting:
+		GenerateShootingEnemy();
+		break;
+	}
+
+	if (enemy_waves[current_wave].count > 1)
+		enemy_waves[current_wave].count--;
+	else
+		if (current_wave < enemy_waves.size() - 1)
+			current_wave++;
 }
 
 void Invaders::GenerateSimpleEnemy()
 {
-	int pos_x = RandomNumber(simple_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - simple_enemy.getSize().x / 2);
+	int pos_x = RandomNumber((int)simple_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - (int)simple_enemy.getSize().x / 2);
 	std::unique_ptr<Enemy> e = std::make_unique<SimpleEnemy>(simple_enemy);
 	e->SetPosition(sf::Vector2f(pos_x, 0));
 	std::cout << "Generated SimpleEnemy on x=" << pos_x << std::endl;
@@ -137,7 +186,7 @@ void Invaders::GenerateSimpleEnemy()
 
 void Invaders::GenerateMovingEnemy()
 {
-	int pos_x = RandomNumber(moving_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - moving_enemy.getSize().x / 2);
+	int pos_x = RandomNumber((int)moving_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - (int)moving_enemy.getSize().x / 2);
 	std::unique_ptr<Enemy> e = std::make_unique<MovingEnemy>(moving_enemy, pos_x);
 	e->SetPosition(sf::Vector2f(pos_x, 0));
 	std::cout << "Generated MovingEnemy on x=" << pos_x << std::endl;
@@ -146,7 +195,7 @@ void Invaders::GenerateMovingEnemy()
 
 void Invaders::GenerateShootingEnemy()
 {
-	int pos_x = RandomNumber(shooting_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - shooting_enemy.getSize().x / 2);
+	int pos_x = RandomNumber((int)shooting_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - (int)shooting_enemy.getSize().x / 2);
 	std::unique_ptr<Enemy> e = std::make_unique<ShootingEnemy>(shooting_enemy, pos_x);
 	std::cout << "Generated ShootingEnemy on x=" << pos_x << std::endl;
 	GameObjectManager::getInstance().AddGameObject(std::move(e));

@@ -11,6 +11,7 @@ Common.hpp - common (global) functions
 
 void InitRandom();
 int RandomNumber(int min, int max);
+float RandomNumber(float min, float max);
 sf::Vector2f Center(sf::Rect<float> rect);
 
 #endif
