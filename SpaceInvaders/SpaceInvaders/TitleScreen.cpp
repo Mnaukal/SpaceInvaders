@@ -56,7 +56,7 @@ TitleScreen::TitleScreen()
 	sf::FloatRect subtitleTextRect = subtitle.getLocalBounds();
 	subtitle.setOrigin(subtitleTextRect.left + subtitleTextRect.width / 2.0f,
 		subtitleTextRect.top + subtitleTextRect.height / 2.0f);
-	subtitle.setPosition(sf::Vector2f(SCREEN_WIDTH / 2.0f, 650));
+	subtitle.setPosition(sf::Vector2f(SCREEN_WIDTH / 2.0f, 600));
 
 	menu.push_back(MenuItem("easy", sf::Rect<float>(SCREEN_WIDTH / 2.f - 150, 300, 300, 50), font));
 	menu.push_back(MenuItem("hard", sf::Rect<float>(SCREEN_WIDTH / 2.f - 150, 360, 300, 50), font));

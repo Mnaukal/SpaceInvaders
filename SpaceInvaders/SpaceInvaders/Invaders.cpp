@@ -66,48 +66,78 @@ bool Invaders::LoadTextures()
 
 bool Invaders::LoadConfig(const std::string & filename)
 {
-	// TODO handle wrong input file
-
 	std::ifstream input(CONFIG_PATH + filename);
 	if(!input)
 	{
-		error_message =  "error loading config - " + filename;
+		error_message =  "error opening config file - " + filename;
 		return false;
 	}
-	int x;
-	float y;
-	// LIVES
-	input >> x;
-	PLAYER_LIVES = x;
-	SCORE_TEXT_X = PLAYER_LIVES * 44 + 20;
-	// SPEED
-	input >> y;
-	PLAYER_SPEED = y;
-	// ENERGY_RESORE
-	input >> y;
-	PLAYER_ENERGY_RESTORE_RATE = y;
 
-	// waves
-	std::string s;
-	input >> s;
-	if (!input || s != "WAVES:")
-	{
-		error_message =  "error loading enemy waves - " + filename;
-		return false;
-	}
+	unsigned line_num = 0;
 	while (true)
 	{
+		line_num++;
+		std::string name, value;
+		std::getline(input, name, ':');
+		std::getline(input, value, '\n');
+
+		if (!input)
+		{
+			error_message = "error in config file - " + filename + ":\nno enemy waves declared";
+			return false;
+		}
+
+		if (name == "WAVES")
+			break;
+
+		try {
+			if (name == "LIVES") {
+				PLAYER_LIVES = std::stoi(value);
+				SCORE_TEXT_X = PLAYER_LIVES * 44 + 20;
+			}
+			else if (name == "SPEED") {
+				PLAYER_SPEED = std::stof(value);
+			}
+			else if (name == "ENERGY_RESTORE") {
+				PLAYER_ENERGY_RESTORE_RATE = std::stof(value);
+			}
+		}
+		catch (const std::invalid_argument& ia) {
+			error_message = "error in config file " + filename + " on line " + std::to_string(line_num) + ":\ninvalid number";
+			return false;
+		}
+		catch (const std::out_of_range& oor) {
+			error_message = "error in config file " + filename + " on line " + std::to_string(line_num) + ":\ninvalid number";
+			return false;
+		}
+	}
+
+	// waves
+	while (true)
+	{
+		line_num++;
+		std::string str;
+		std::getline(input, str);
+
+		if (!input)
+			break;
+
+		std::stringstream s(str);
+
 		int count;
 		std::string type;
 		float min_time, max_time;
 
-		input >> count;
-		input >> type;
-		input >> min_time;
-		input >> max_time;
+		s >> count;
+		s >> type;
+		s >> min_time;
+		s >> max_time;
 
-		if (!input)
-			break;
+		if (!s)
+		{
+			error_message = "error in config file " + filename + " on line " + std::to_string(line_num) + ":\ninvalid wave declaration";
+			return false;
+		}
 
 		EnemyWave w;
 		w.count = count;
