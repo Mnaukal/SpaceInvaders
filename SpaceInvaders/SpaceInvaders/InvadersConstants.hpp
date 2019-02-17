@@ -22,6 +22,7 @@ static constexpr float PLAYER_ENERGY_SHOOT = 0.15f; // how much energy is needed
 extern float PLAYER_SPEED; // movement speed (pixels/s)
 extern float PLAYER_ENERGY_RESTORE_RATE; // energy gained per second
 extern int PLAYER_LIVES; // number of lives of player
+static constexpr float HIT_ANIMATION_DURATION = 0.3f; // duration of animation (seconds)
 
 // rockets
 static constexpr float ROCKET_SIZE_X = 10.f; // size of rocket sprite
@@ -34,7 +35,6 @@ static constexpr float EXPLOSION_ANIMATION_SCALING_SPEED = 2.f; // scale = EXPLO
 static constexpr float EXPLOSION_ANIMATION_DURATION = 0.5f; // duration of animation (seconds)
 
 // enemies
-static constexpr float ENEMY_SIZE = 80.f;  // size of enemy sprite
 static constexpr float ENEMY_SPEED = 60.f; // movement (descend) speed (pixels/s)
 static constexpr int MOVING_ENEMY_MAX_HORIZONTAL_SPEED = 100; // horizontal movement speed (pixels/s)
 static constexpr int MOVING_ENEMY_MAX_HORIZONTAL_RANGE = 200; // how many pixels to the left and right from original position can the enemy move
@@ -43,9 +43,9 @@ static constexpr int SHOOTING_ENEMY_MAX_HORIZONTAL_SPEED = 100; // horizontal mo
 static constexpr int SHOOTING_ENEMY_MAX_HORIZONTAL_RANGE = 500; // how many pixels to the left and right from original position can the enemy move
 static constexpr int SHOOTING_ENEMY_MIN_HORIZONTAL_RANGE = 200; // how many pixels to the left and right from original position can the enemy move
 static constexpr int SHOOTING_ENEMY_MAX_Y_POSITION = 300; // distance of the ShootingEnemy from the top of screen
-static constexpr int SHOOTING_ENEMY_MIN_Y_POSITION = (int)(ENEMY_SIZE / 2) + 10; // distance of the ShootingEnemy from the top of screen
-static constexpr int SHOOTING_ENEMY_MAX_ROCKET_TIME = 10; // time between shooting rockets (seconds)
-static constexpr int SHOOTING_ENEMY_MIN_ROCKET_TIME = 1; // time between shooting rockets (seconds)
+static constexpr int SHOOTING_ENEMY_MIN_Y_POSITION = 60; // distance of the ShootingEnemy from the top of screen
+static constexpr float SHOOTING_ENEMY_MAX_ROCKET_TIME = 10; // time between shooting rockets (seconds)
+static constexpr float SHOOTING_ENEMY_MIN_ROCKET_TIME = 1; // time between shooting rockets (seconds)
 static constexpr int KILL_SCORE_SIMPLE = 100, KILL_SCORE_MOVING = 100, KILL_SCORE_SHOOTING = 100; // scores for enemy killing
 
 // Sprites

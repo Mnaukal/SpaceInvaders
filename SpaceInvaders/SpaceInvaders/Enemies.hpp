@@ -61,7 +61,7 @@ public:
 	virtual int EnemyScore() override { return KILL_SCORE_SHOOTING; }
 protected:
 	// Inherited via MovingEnemy
-	virtual float MovementY(sf::Time deltaTime) override { return 0; };
+	virtual float MovementY(sf::Time deltaTime) override { return 0.0f; };
 protected:
 	// new methods
 	float GetRocketTime() { return RandomNumber(SHOOTING_ENEMY_MIN_ROCKET_TIME, SHOOTING_ENEMY_MAX_ROCKET_TIME); };

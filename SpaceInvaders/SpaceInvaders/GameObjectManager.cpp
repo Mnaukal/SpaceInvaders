@@ -47,3 +47,11 @@ void GameObjectManager::RemoveGameObjects()
 	}
 	RemovedGameObjects.clear();
 }
+
+void GameObjectManager::ClearAll()
+{
+	AddedGameObjects.clear();
+	RemovedGameObjects.clear();
+	gameObjects.clear();
+	UIobjects.clear();
+}

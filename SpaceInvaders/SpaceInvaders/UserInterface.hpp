@@ -59,4 +59,16 @@ public:
 	virtual sf::Rect<float> BoundingBox() { return sf::Rect<float>(); };
 };
 
+class GameOverText : public GameObject {
+private:
+	sf::RectangleShape overlay;
+	sf::Text text, score;
+public:
+	GameOverText(const sf::Font & font);
+	// Inherited via GameObject
+	virtual void Draw(sf::RenderWindow & window) override;
+	virtual void Update(sf::Time deltaTime) {};
+	virtual sf::Rect<float> BoundingBox() { return sf::Rect<float>(); };
+};
+
 #endif

@@ -4,7 +4,10 @@ void SimpleEnemy::Update(sf::Time deltaTime)
 {
 	MoveBy(0, deltaTime.asSeconds() * Speed);
 
-	if (GetPosition().y > SCREEN_HEIGHT + ENEMY_SIZE)
+	if (GetPosition().y > SCREEN_HEIGHT - height / 2)
+		HitPlayerOnce();
+
+	if (GetPosition().y > SCREEN_HEIGHT + height / 2)
 		RemoveEnemy();
 }
 
@@ -12,7 +15,10 @@ void MovingEnemy::Update(sf::Time deltaTime)
 {
 	MoveBy(MovementX(deltaTime), MovementY(deltaTime));
 
-	if (GetPosition().y > SCREEN_HEIGHT + ENEMY_SIZE)
+	if (GetPosition().y > SCREEN_HEIGHT - height / 2)
+		HitPlayerOnce();
+
+	if (GetPosition().y > SCREEN_HEIGHT + height / 2)
 		RemoveEnemy();
 }
 
@@ -52,6 +58,9 @@ void ShootingEnemy::Update(sf::Time deltaTime)
 
 	MoveBy(MovementX(deltaTime), MovementY(deltaTime));
 
-	if (GetPosition().y > SCREEN_HEIGHT + ENEMY_SIZE)
+	if (GetPosition().y > SCREEN_HEIGHT - height / 2)
+		HitPlayerOnce();
+
+	if (GetPosition().y > SCREEN_HEIGHT + height / 2)
 		RemoveEnemy();
 }

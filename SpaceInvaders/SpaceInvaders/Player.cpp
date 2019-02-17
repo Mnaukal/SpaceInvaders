@@ -1,11 +1,18 @@
 #include "Player.hpp"
 
-Player::Player(const sf::Texture & texture) : shootTime(0), Speed(PLAYER_SPEED) {
+Player::Player(const sf::Texture & texture) : shootTime(0), Speed(PLAYER_SPEED), lives(PLAYER_LIVES) {
 	sprite.setTexture(texture);
-	sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y);
+	sprite.setOrigin(texture.getSize().x / 2.f, (float)texture.getSize().y);
 	width = texture.getSize().x;
 	height = texture.getSize().y;
-};
+}
+void Player::HitPlayer()
+{
+	lives--;
+
+	std::unique_ptr<HitEffect> hit = std::make_unique<HitEffect>();
+	GameObjectManager::getInstance().AddUIObject(std::move(hit));
+}
 
 void Player::Draw(sf::RenderWindow & window)
 {
@@ -51,4 +58,28 @@ void Player::Update(sf::Time deltaTime)
 sf::Rect<float> Player::BoundingBox()
 {
 	return sf::Rect<float>(position.x - width / 2, position.y - height, width, height);
+}
+
+HitEffect::HitEffect() : shape(sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT)), Animated(HIT_ANIMATION_DURATION)
+{
+	shape.setFillColor(sf::Color(255, 0, 0, 0));
+}
+
+void HitEffect::Draw(sf::RenderWindow & window)
+{
+	window.draw(shape);
+}
+
+void HitEffect::Update(sf::Time deltaTime)
+{
+	if (Animate(deltaTime))
+		GameObjectManager::getInstance().RemoveUIObject(this);
+}
+
+void HitEffect::DoAnimation(float progress)
+{
+	if (progress < 0.5f)
+		shape.setFillColor(sf::Color(255, 0, 0, progress * 80));
+	else
+		shape.setFillColor(sf::Color(255, 0, 0, (1 - progress) * 80));
 }

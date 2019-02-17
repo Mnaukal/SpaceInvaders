@@ -6,10 +6,19 @@ void Enemy::RemoveEnemy()
 
 }
 
+void Enemy::HitPlayerOnce()
+{
+	if (!did_hit)
+	{
+		GameObjectManager::getInstance().player->HitPlayer();
+		did_hit = true;
+	}
+}
+
 Enemy::Enemy(const sf::Texture & texture)
 {
 	sprite.setTexture(texture);
-	sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+	sprite.setOrigin(texture.getSize().x / 2.f, texture.getSize().y / 2.f);
 	width = texture.getSize().x;
 	height = texture.getSize().y;
 }
@@ -22,6 +31,6 @@ void Enemy::Draw(sf::RenderWindow & window)
 
 sf::Rect<float> Enemy::BoundingBox()
 {
-	return sf::Rect<float>(position.x - width/2, position.y - height/2, width, height);
+	return sf::Rect<float>((float)(position.x - width/2), (float)(position.y - height/2), (float)width, (float)height);
 }
 

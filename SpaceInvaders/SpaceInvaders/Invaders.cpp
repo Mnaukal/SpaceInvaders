@@ -1,9 +1,13 @@
 #include "Invaders.hpp"
 
-Invaders::Invaders(const std::string & filename) : timer(sf::Time::Zero), pausedOverlay(font) {
+Invaders::Invaders(const std::string & filename) 
+	: timer(sf::Time::Zero), pausedOverlay(font), gameOverOverlay(font) 
+{
 	InitRandom();
 	LoadConfig(filename);
 	LoadTextures();
+
+	GameObjectManager::getInstance().ClearAll();
 
 	std::unique_ptr<Player> p = std::make_unique<Player>(player);
 	p->SetPosition(sf::Vector2f(PLAYER_START_POSITION_X, PLAYER_START_POSITION_Y)); 
@@ -109,10 +113,17 @@ void Invaders::LoadConfig(const std::string & filename)
 	}
 }
 
+bool Invaders::IsGameOver()
+{
+	return GameObjectManager::getInstance().player->lives <= 0;
+}
+
 void Invaders::Update(sf::Time deltaTime)
 {
 	if (paused)
 		return;
+	if (IsGameOver())
+		return; 
 
 	for (auto && go : GameObjectManager::getInstance().gameObjects)
 	{
@@ -179,7 +190,7 @@ void Invaders::GenerateSimpleEnemy()
 {
 	int pos_x = RandomNumber((int)simple_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - (int)simple_enemy.getSize().x / 2);
 	std::unique_ptr<Enemy> e = std::make_unique<SimpleEnemy>(simple_enemy);
-	e->SetPosition(sf::Vector2f(pos_x, 0));
+	e->SetPosition(sf::Vector2f((float)pos_x, 0.f));
 	std::cout << "Generated SimpleEnemy on x=" << pos_x << std::endl;
 	GameObjectManager::getInstance().AddGameObject(std::move(e));
 }
@@ -188,7 +199,7 @@ void Invaders::GenerateMovingEnemy()
 {
 	int pos_x = RandomNumber((int)moving_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - (int)moving_enemy.getSize().x / 2);
 	std::unique_ptr<Enemy> e = std::make_unique<MovingEnemy>(moving_enemy, pos_x);
-	e->SetPosition(sf::Vector2f(pos_x, 0));
+	e->SetPosition(sf::Vector2f((float)pos_x, 0.f));
 	std::cout << "Generated MovingEnemy on x=" << pos_x << std::endl;
 	GameObjectManager::getInstance().AddGameObject(std::move(e));
 }
@@ -210,6 +221,11 @@ bool Invaders::HandleEvent(const sf::Event & event)
 			paused = !paused;
 			return true;
 		}
+		if (IsGameOver())
+		{
+			load_menu = true;
+			return true;
+		}
 	}
 
 	return false;
@@ -224,6 +240,12 @@ void Invaders::Draw(sf::RenderWindow & window)
 	for (auto && go : GameObjectManager::getInstance().UIobjects)
 	{
 		go->Draw(window);
+	}
+
+	if (IsGameOver())
+	{
+		gameOverOverlay.Draw(window);
+		return;
 	}
 
 	if (paused)
@@ -249,6 +271,14 @@ sf::View Invaders::Resize(unsigned width, unsigned height)
 {
 	// TODO
 	return sf::View();
+}
+
+std::unique_ptr<Game> Invaders::LoadLevel()
+{
+	if (!load_menu)
+		return nullptr;
+
+	return std::make_unique<TitleScreen>();
 }
 
 

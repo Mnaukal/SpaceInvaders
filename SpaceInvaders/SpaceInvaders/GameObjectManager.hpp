@@ -33,6 +33,7 @@ protected:
 	std::vector<std::unique_ptr<GameObject>> UIobjects;
 	void AddGameObjects();
 	void RemoveGameObjects();
+	void ClearAll();
 public:
 	Player* player;
 	void AddGameObject(std::unique_ptr<GameObject> gameObject)

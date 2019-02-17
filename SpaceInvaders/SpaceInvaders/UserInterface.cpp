@@ -2,11 +2,11 @@
 
 EnergyBar::EnergyBar(sf::Rect<int> position) : background(sf::Vector2f(position.width, position.height)), progress(sf::Vector2f(position.width, position.height))
 {
-	background.setPosition(position.left, position.top);
+	background.setPosition((float)position.left, (float)position.top);
 	background.setFillColor(sf::Color::Black);
 	background.setOutlineColor(sf::Color::White);
 	background.setOutlineThickness(2.f);
-	progress.setPosition(position.left, position.top);
+	progress.setPosition((float)position.left, (float)position.top);
 	progress.setFillColor(sf::Color::Blue);
 }
 
@@ -48,7 +48,7 @@ ScoreText::ScoreText(sf::Rect<int> position, const sf::Font & font)
 	text.setString("0000");
 	text.setCharacterSize(40);
 	text.setFillColor(sf::Color::White);
-	text.setPosition(position.left, position.top);
+	text.setPosition((float)position.left, (float)position.top);
 }
 
 void ScoreText::Draw(sf::RenderWindow & window)
@@ -65,7 +65,7 @@ LivesDisplay::LivesDisplay(const sf::Texture & heart, const sf::Texture & heart_
 {
 	for (size_t i = 0; i < hearts.size(); i++)
 	{
-		hearts[i].setPosition(i * 44 + 10, 10);
+		hearts[i].setPosition((float)i * 44 + 10, 10.f);
 		hearts[i].setScale(3, 3);
 	}
 }
@@ -82,4 +82,36 @@ void LivesDisplay::Draw(sf::RenderWindow & window)
 		hearts[i].setTexture(heart_empty);
 		window.draw(hearts[i]);
 	}
+}
+
+GameOverText::GameOverText(const sf::Font & font) : overlay(sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT))
+{
+	overlay.setFillColor(sf::Color(64, 0, 0, 180));
+	text.setFont(font);
+	text.setString("game over");
+	text.setCharacterSize(70);
+	text.setFillColor(sf::Color::White);
+	score.setFont(font);
+	score.setString("0000");
+	score.setCharacterSize(40);
+	score.setFillColor(sf::Color::White);
+}
+
+void GameOverText::Draw(sf::RenderWindow & window)
+{
+	// center text
+	sf::FloatRect textRect = text.getLocalBounds();
+	text.setOrigin(textRect.left + textRect.width / 2.0f,
+		textRect.top + textRect.height / 2.0f);
+	text.setPosition(sf::Vector2f(SCREEN_WIDTH / 2.0f, 300.f));
+	// center score text
+	sf::FloatRect scoreRect = score.getLocalBounds();
+	score.setOrigin(scoreRect.left + scoreRect.width / 2.0f,
+		scoreRect.top + scoreRect.height / 2.0f);
+	score.setPosition(sf::Vector2f(SCREEN_WIDTH / 2.0f, 400.f));
+
+	window.draw(overlay);
+	window.draw(text);
+	score.setString(std::to_string(GameObjectManager::getInstance().player->Score));
+	window.draw(score);
 }

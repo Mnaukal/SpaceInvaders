@@ -16,6 +16,8 @@ private:
 protected:
 	int width, height;
 	int killScore = 100;
+	bool did_hit = false;
+	void HitPlayerOnce();
 public:
 	float Speed = ENEMY_SPEED;
 	Enemy(const sf::Texture & texture);
@@ -25,7 +27,6 @@ public:
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
 	virtual sf::Rect<float> BoundingBox() override;
-	float GetWidth() { return width; }
 };
 #endif
 
