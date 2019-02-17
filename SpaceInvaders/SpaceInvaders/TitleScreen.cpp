@@ -4,7 +4,7 @@ void TitleScreen::SelectItem(int item)
 {
 	if (item < 0)
 		item = menu.size() - 1;
-	if (item >= menu.size())
+	if (item >= (int)menu.size())
 		item = 0;
 	selectedItem = item;
 

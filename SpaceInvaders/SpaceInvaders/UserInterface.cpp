@@ -1,6 +1,7 @@
 #include "UserInterface.hpp"
 
-EnergyBar::EnergyBar(sf::Rect<int> position) : background(sf::Vector2f(position.width, position.height)), progress(sf::Vector2f(position.width, position.height))
+EnergyBar::EnergyBar(sf::Rect<int> position)
+	: background(sf::Vector2f((float)position.width, (float)position.height)), progress(sf::Vector2f((float)position.width, (float)position.height))
 {
 	background.setPosition((float)position.left, (float)position.top);
 	background.setFillColor(sf::Color::Black);

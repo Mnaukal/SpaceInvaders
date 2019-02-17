@@ -8,7 +8,6 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Space Invaders!");
 	sf::Clock clock;
-	//std::unique_ptr<Game> game = std::make_unique<Invaders>();
 	std::unique_ptr<Game> game = std::make_unique<TitleScreen>();
 
 	while (window.isOpen())

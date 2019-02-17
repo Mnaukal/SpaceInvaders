@@ -47,7 +47,7 @@ void Player::Update(sf::Time deltaTime)
 		if (shootTime <= 0 && energy > PLAYER_ENERGY_SHOOT)
 		{
 			std::unique_ptr<Rocket> r = std::make_unique<Rocket>(ROCKET_SPEED);
-			r->SetPosition(GetPosition() - sf::Vector2f(0, height));
+			r->SetPosition(GetPosition() - sf::Vector2f(0.f, (float)height));
 			GameObjectManager::getInstance().AddGameObject(std::move(r));
 			shootTime = PLAYER_MIN_SHOOT_TIME;
 			energy -= PLAYER_ENERGY_SHOOT;
@@ -57,7 +57,7 @@ void Player::Update(sf::Time deltaTime)
 
 sf::Rect<float> Player::BoundingBox()
 {
-	return sf::Rect<float>(position.x - width / 2, position.y - height, width, height);
+	return sf::Rect<float>(position.x - width / 2.f, (float)position.y - height, (float)width, (float)height);
 }
 
 HitEffect::HitEffect() : shape(sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT)), Animated(HIT_ANIMATION_DURATION)
@@ -79,7 +79,7 @@ void HitEffect::Update(sf::Time deltaTime)
 void HitEffect::DoAnimation(float progress)
 {
 	if (progress < 0.5f)
-		shape.setFillColor(sf::Color(255, 0, 0, progress * 80));
+		shape.setFillColor(sf::Color(255, 0, 0, (sf::Uint8)(progress * 80)));
 	else
-		shape.setFillColor(sf::Color(255, 0, 0, (1 - progress) * 80));
+		shape.setFillColor(sf::Color(255, 0, 0, (sf::Uint8)((1 - progress) * 80)));
 }

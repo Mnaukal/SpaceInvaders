@@ -41,7 +41,10 @@ sf::Rect<float> Rocket::BoundingBox()
 	return sf::Rect<float>(position.x - ROCKET_SIZE_X / 2, position.y - ROCKET_SIZE_Y / 2, ROCKET_SIZE_X, ROCKET_SIZE_Y);
 }
 
-Explosion::Explosion(sf::Vector2f pos) : shape(sf::Vector2f(EXPLOSION_SIZE, EXPLOSION_SIZE)), Animated(EXPLOSION_ANIMATION_DURATION)
+Explosion::Explosion(sf::Vector2f pos) : Explosion(pos, EXPLOSION_SIZE) { }
+
+Explosion::Explosion(sf::Vector2f pos, int size)
+	: shape(sf::Vector2f(size, size)), Animated(EXPLOSION_ANIMATION_DURATION)
 {
 	position = pos;
 	shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
@@ -75,5 +78,15 @@ void Explosion::DoAnimation(float progress)
 
 void EnemyRocket::Collide(GameObject * other, sf::FloatRect intersection)
 {
-	// TODO -> kill player
+	Player* p = dynamic_cast<Player*>(other);
+	if (p != nullptr)
+	{
+		// create explosion
+		std::unique_ptr<Explosion> expl = std::make_unique<Explosion>(Center(intersection), SMALL_EXPLOSION_SIZE);
+		GameObjectManager::getInstance().AddUIObject(std::move(expl));
+		// hit player
+		GameObjectManager::getInstance().player->HitPlayer();
+		// remove rocket
+		GameObjectManager::getInstance().RemoveGameObject(this);
+	}
 }

@@ -102,11 +102,11 @@ bool Invaders::LoadConfig(const std::string & filename)
 				PLAYER_ENERGY_RESTORE_RATE = std::stof(value);
 			}
 		}
-		catch (const std::invalid_argument& ia) {
+		catch (const std::invalid_argument&) {
 			error_message = "error in config file " + filename + " on line " + std::to_string(line_num) + ":\ninvalid number";
 			return false;
 		}
-		catch (const std::out_of_range& oor) {
+		catch (const std::out_of_range&) {
 			error_message = "error in config file " + filename + " on line " + std::to_string(line_num) + ":\ninvalid number";
 			return false;
 		}
@@ -243,7 +243,7 @@ void Invaders::GenerateSimpleEnemy()
 void Invaders::GenerateMovingEnemy()
 {
 	int pos_x = RandomNumber((int)moving_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - (int)moving_enemy.getSize().x / 2);
-	std::unique_ptr<Enemy> e = std::make_unique<MovingEnemy>(moving_enemy, pos_x);
+	std::unique_ptr<Enemy> e = std::make_unique<MovingEnemy>(moving_enemy, (float)pos_x);
 	e->SetPosition(sf::Vector2f((float)pos_x, 0.f));
 	std::cout << "Generated MovingEnemy on x=" << pos_x << std::endl;
 	GameObjectManager::getInstance().AddGameObject(std::move(e));
@@ -252,10 +252,12 @@ void Invaders::GenerateMovingEnemy()
 void Invaders::GenerateShootingEnemy()
 {
 	int pos_x = RandomNumber((int)shooting_enemy.getSize().x / 2, SCREEN_WIDTH + 1 - (int)shooting_enemy.getSize().x / 2);
-	std::unique_ptr<Enemy> e = std::make_unique<ShootingEnemy>(shooting_enemy, pos_x);
+	std::unique_ptr<Enemy> e = std::make_unique<ShootingEnemy>(shooting_enemy, (float)pos_x);
 	std::cout << "Generated ShootingEnemy on x=" << pos_x << std::endl;
 	GameObjectManager::getInstance().AddGameObject(std::move(e));
 }
+
+// TODO return to menu 
 
 bool Invaders::HandleEvent(const sf::Event & event)
 {
@@ -309,7 +311,7 @@ void Invaders::Resume()
 
 void Invaders::SaveAndExit()
 {
-	// TODO
+	// do nothing
 }
 
 sf::View Invaders::Resize(unsigned width, unsigned height)

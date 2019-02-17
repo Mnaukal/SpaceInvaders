@@ -30,7 +30,8 @@ static constexpr float ROCKET_SIZE_Y = 45.f; // size of rocket sprite
 static constexpr float ROCKET_SPEED = 700.f; // movements speed (pixels/s)
 
 // explosions (animation)
-static constexpr float EXPLOSION_SIZE = 80.f;  // size of player sprite
+static constexpr float EXPLOSION_SIZE = 80.f;  // size of explosion rectangle
+static constexpr float SMALL_EXPLOSION_SIZE = 40.f;  // size of explosion rectangle
 static constexpr float EXPLOSION_ANIMATION_SCALING_SPEED = 2.f; // scale = EXPLOSION_ANIMATION_SCALING_SPEED * progress_of_animation
 static constexpr float EXPLOSION_ANIMATION_DURATION = 0.5f; // duration of animation (seconds)
 

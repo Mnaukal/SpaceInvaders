@@ -20,7 +20,7 @@ public:
 	float Speed;
 	float energy = 1.f;
 	int Score = 0;
-	int lives; 
+	unsigned lives; 
 	Player(const sf::Texture & texture);
 	void HitPlayer(); // subtract life
 	// Inherited via GameObject

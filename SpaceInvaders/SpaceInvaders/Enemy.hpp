@@ -27,6 +27,7 @@ public:
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
 	virtual sf::Rect<float> BoundingBox() override;
+	virtual void Collide(GameObject* other, sf::FloatRect intersection) override;
 };
 #endif
 
