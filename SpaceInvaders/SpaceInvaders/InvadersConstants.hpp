@@ -65,5 +65,7 @@ static constexpr int SCORE_TEXT_WIDTH = 140;
 static constexpr int SCORE_TEXT_HEIGHT = 30;
 static constexpr int SCORE_TEXT_Y = 5;
 extern int SCORE_TEXT_X;
+// Game Over
+static constexpr float GAME_OVER_MIN_TIME = 1.f; // time (in seconds) before game over screen can be closed (to prevent unwanted closing)
 
 #endif

@@ -32,6 +32,8 @@ private:
 	std::vector<EnemyWave> enemy_waves;
 	unsigned current_wave = 0;
 	bool load_menu = false; // se to true to return to main menu
+	std::string error_message = ""; // message to be displayed in menu after returning
+	sf::Time gameOver_time;
 public:
 	Invaders(const std::string & filename); // filename = config file
 	// Inherited via Game
@@ -50,8 +52,8 @@ private:
 	void GenerateSimpleEnemy();
 	void GenerateMovingEnemy();
 	void GenerateShootingEnemy();
-	void LoadTextures();
-	void LoadConfig(const std::string & filename);
+	bool LoadTextures(); // return false if fails
+	bool LoadConfig(const std::string & filename); // return false if fails
 	bool IsGameOver(); // true if game is over and should be stopped
 };
 

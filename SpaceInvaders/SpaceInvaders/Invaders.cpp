@@ -1,11 +1,11 @@
 #include "Invaders.hpp"
 
 Invaders::Invaders(const std::string & filename) 
-	: timer(sf::Time::Zero), pausedOverlay(font), gameOverOverlay(font) 
+	: timer(sf::Time::Zero), pausedOverlay(font), gameOverOverlay(font), gameOver_time(sf::Time::Zero)
 {
 	InitRandom();
-	LoadConfig(filename);
-	LoadTextures();
+	if (!LoadConfig(filename)) load_menu = true;
+	if (!LoadTextures()) load_menu = true;
 
 	GameObjectManager::getInstance().ClearAll();
 
@@ -22,49 +22,57 @@ Invaders::Invaders(const std::string & filename)
 	GameObjectManager::getInstance().AddUIObject(std::move(ld));
 }
 
-void Invaders::LoadTextures()
+bool Invaders::LoadTextures()
 {
 	if (!font.loadFromFile(FONT_PATH))
 	{
-		std::cout << "Error loading font" << std::endl;
+		error_message = "error loading font";
+		return false;
 	}
 	if (!heart.loadFromFile(SPRITES_PATH + "heart.png"))
 	{
-		std::cout << "Error loading texture - heart" << std::endl;
+		error_message = "error loading texture - heart";
+		return false;
 	}
 	if (!heart_empty.loadFromFile(SPRITES_PATH + "heart_empty.png"))
 	{
-		std::cout << "Error loading texture - heart_empty" << std::endl;
+		error_message = "error loading texture - heart_empty";
+		return false;
 	}
 	if (!player.loadFromFile(SPRITES_PATH + "player.png"))
 	{
-		std::cout << "Error loading texture - player" << std::endl;
+		error_message = "error loading texture - player";
+		return false;
 	}
 	if (!simple_enemy.loadFromFile(SPRITES_PATH + "simple_enemy.png"))
 	{
-		std::cout << "Error loading texture - simple_enemy" << std::endl;
+		error_message = "error loading texture - simple_enemy";
+		return false;
 	}
 	if (!moving_enemy.loadFromFile(SPRITES_PATH + "moving_enemy.png"))
 	{
-		std::cout << "Error loading texture - moving_enemy" << std::endl;
+		error_message = "error loading texture - moving_enemy";
+		return false;
 	}
 	if (!shooting_enemy.loadFromFile(SPRITES_PATH + "shooting_enemy.png"))
 	{
-		std::cout << "Error loading texture - shooting_enemy" << std::endl;
+		error_message = "error loading texture - shooting_enemy";
+		return false;
 	}
 	heart.setSmooth(false);
 	heart_empty.setSmooth(false);
+	return true;
 }
 
-void Invaders::LoadConfig(const std::string & filename)
+bool Invaders::LoadConfig(const std::string & filename)
 {
 	// TODO handle wrong input file
 
 	std::ifstream input(CONFIG_PATH + filename);
 	if(!input)
 	{
-		std::cout << "Error loading config - " << filename << std::endl;
-		return;
+		error_message =  "error loading config - " + filename;
+		return false;
 	}
 	int x;
 	float y;
@@ -84,8 +92,8 @@ void Invaders::LoadConfig(const std::string & filename)
 	input >> s;
 	if (!input || s != "WAVES:")
 	{
-		std::cout << "Error loading enemy waves - " << filename << std::endl;
-		return;
+		error_message =  "error loading enemy waves - " + filename;
+		return false;
 	}
 	while (true)
 	{
@@ -111,10 +119,14 @@ void Invaders::LoadConfig(const std::string & filename)
 
 		enemy_waves.push_back(w);
 	}
+	return true;
 }
 
 bool Invaders::IsGameOver()
 {
+	if (load_menu)
+		return true;
+
 	return GameObjectManager::getInstance().player->lives <= 0;
 }
 
@@ -123,7 +135,10 @@ void Invaders::Update(sf::Time deltaTime)
 	if (paused)
 		return;
 	if (IsGameOver())
-		return; 
+	{
+		gameOver_time += deltaTime;
+		return;
+	}
 
 	for (auto && go : GameObjectManager::getInstance().gameObjects)
 	{
@@ -221,7 +236,7 @@ bool Invaders::HandleEvent(const sf::Event & event)
 			paused = !paused;
 			return true;
 		}
-		if (IsGameOver())
+		if ((event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Escape) && IsGameOver() && gameOver_time.asSeconds() >= GAME_OVER_MIN_TIME)
 		{
 			load_menu = true;
 			return true;
@@ -278,7 +293,10 @@ std::unique_ptr<Game> Invaders::LoadLevel()
 	if (!load_menu)
 		return nullptr;
 
-	return std::make_unique<TitleScreen>();
+	if(error_message == "")
+		return std::make_unique<TitleScreen>();
+	else
+		return std::make_unique<TitleScreen>(error_message);
 }
 
 

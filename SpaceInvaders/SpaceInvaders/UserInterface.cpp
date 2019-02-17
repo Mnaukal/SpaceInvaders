@@ -28,7 +28,7 @@ PausedText::PausedText(const sf::Font & font) : overlay(sf::Vector2f(SCREEN_WIDT
 
 void PausedText::Draw(sf::RenderWindow & window)
 {
-	// center text
+	// center text - needs to be here, because font object got by reference in constructor is constructed later
 	sf::FloatRect textRect = text.getLocalBounds();
 	text.setOrigin(textRect.left + textRect.width / 2.0f,
 		textRect.top + textRect.height / 2.0f);
@@ -86,7 +86,7 @@ void LivesDisplay::Draw(sf::RenderWindow & window)
 
 GameOverText::GameOverText(const sf::Font & font) : overlay(sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT))
 {
-	overlay.setFillColor(sf::Color(64, 0, 0, 180));
+	overlay.setFillColor(sf::Color(40, 0, 0, 180));
 	text.setFont(font);
 	text.setString("game over");
 	text.setCharacterSize(70);
