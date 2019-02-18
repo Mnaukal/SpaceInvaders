@@ -43,7 +43,7 @@ sf::Rect<float> Rocket::BoundingBox()
 
 Explosion::Explosion(sf::Vector2f pos) : Explosion(pos, EXPLOSION_SIZE) { }
 
-Explosion::Explosion(sf::Vector2f pos, int size)
+Explosion::Explosion(sf::Vector2f pos, float size)
 	: shape(sf::Vector2f(size, size)), Animated(EXPLOSION_ANIMATION_DURATION)
 {
 	position = pos;

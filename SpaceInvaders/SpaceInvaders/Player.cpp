@@ -79,7 +79,7 @@ void HitEffect::Update(sf::Time deltaTime)
 void HitEffect::DoAnimation(float progress)
 {
 	if (progress < 0.5f)
-		shape.setFillColor(sf::Color(255, 0, 0, (sf::Uint8)(progress * 80)));
+		shape.setFillColor(sf::Color(255, 0, 0, (sf::Uint8)(progress * 100)));
 	else
-		shape.setFillColor(sf::Color(255, 0, 0, (sf::Uint8)((1 - progress) * 80)));
+		shape.setFillColor(sf::Color(255, 0, 0, (sf::Uint8)((1 - progress) * 100)));
 }

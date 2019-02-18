@@ -257,8 +257,6 @@ void Invaders::GenerateShootingEnemy()
 	GameObjectManager::getInstance().AddGameObject(std::move(e));
 }
 
-// TODO return to menu 
-
 bool Invaders::HandleEvent(const sf::Event & event)
 {
 	if (event.type == sf::Event::KeyReleased)
@@ -266,6 +264,11 @@ bool Invaders::HandleEvent(const sf::Event & event)
 		if (event.key.code == sf::Keyboard::P)
 		{
 			paused = !paused;
+			return true;
+		}
+		if (event.key.code == sf::Keyboard::Escape && paused)
+		{
+			load_menu = true;
 			return true;
 		}
 		if ((event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Escape) && IsGameOver() && gameOver_time.asSeconds() >= GAME_OVER_MIN_TIME)

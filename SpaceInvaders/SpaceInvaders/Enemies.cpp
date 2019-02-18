@@ -51,7 +51,7 @@ void ShootingEnemy::Update(sf::Time deltaTime)
 	if (RocketTimer <= 0)
 	{
 		RocketTimer = GetRocketTime();
-		std::unique_ptr<EnemyRocket> r = std::make_unique<EnemyRocket>(ROCKET_SPEED);
+		std::unique_ptr<EnemyRocket> r = std::make_unique<EnemyRocket>(ENEMY_ROCKET_SPEED);
 		r->SetPosition(GetPosition());
 		GameObjectManager::getInstance().AddGameObject(std::move(r));
 	}

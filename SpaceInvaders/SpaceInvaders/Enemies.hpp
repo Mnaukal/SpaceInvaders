@@ -31,7 +31,7 @@ protected:
 public:
 	MovingEnemy(const sf::Texture & texture, float pos_x) : Enemy(texture), OriginalPosition(pos_x) {
 		MovementDirection = RandomNumber(0, 2) == 1 ? Direction::Left : Direction::Right;
-		HorizontalSpeed = RandomNumber(0, MOVING_ENEMY_MAX_HORIZONTAL_SPEED);
+		HorizontalSpeed = RandomNumber(MOVING_ENEMY_MIN_HORIZONTAL_SPEED, MOVING_ENEMY_MAX_HORIZONTAL_SPEED);
 		HorizontalRange = RandomNumber(MOVING_ENEMY_MIN_HORIZONTAL_RANGE, MOVING_ENEMY_MAX_HORIZONTAL_RANGE);
 	};
 	// Inherited via GameObject

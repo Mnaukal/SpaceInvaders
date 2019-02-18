@@ -42,5 +42,3 @@ public:
 	virtual void DoAnimation(float progress) override;
 };
 #endif
-
-

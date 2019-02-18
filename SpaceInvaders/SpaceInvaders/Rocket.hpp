@@ -39,7 +39,7 @@ private:
 	float scale = 0;
 public:
 	Explosion(sf::Vector2f pos);
-	Explosion(sf::Vector2f pos, int size);
+	Explosion(sf::Vector2f pos, float size);
 	// Inherited via GameObject
 	virtual void Draw(sf::RenderWindow & window) override;
 	virtual void Update(sf::Time deltaTime) override;

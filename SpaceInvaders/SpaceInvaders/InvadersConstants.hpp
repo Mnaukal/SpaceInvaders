@@ -37,6 +37,7 @@ static constexpr float EXPLOSION_ANIMATION_DURATION = 0.5f; // duration of anima
 
 // enemies
 static constexpr float ENEMY_SPEED = 60.f; // movement (descend) speed (pixels/s)
+static constexpr int MOVING_ENEMY_MIN_HORIZONTAL_SPEED = 20; // horizontal movement speed (pixels/s)
 static constexpr int MOVING_ENEMY_MAX_HORIZONTAL_SPEED = 100; // horizontal movement speed (pixels/s)
 static constexpr int MOVING_ENEMY_MAX_HORIZONTAL_RANGE = 200; // how many pixels to the left and right from original position can the enemy move
 static constexpr int MOVING_ENEMY_MIN_HORIZONTAL_RANGE = 50; // how many pixels to the left and right from original position can the enemy move
@@ -47,6 +48,7 @@ static constexpr int SHOOTING_ENEMY_MAX_Y_POSITION = 300; // distance of the Sho
 static constexpr int SHOOTING_ENEMY_MIN_Y_POSITION = 60; // distance of the ShootingEnemy from the top of screen
 static constexpr float SHOOTING_ENEMY_MAX_ROCKET_TIME = 10; // time between shooting rockets (seconds)
 static constexpr float SHOOTING_ENEMY_MIN_ROCKET_TIME = 1; // time between shooting rockets (seconds)
+static constexpr float ENEMY_ROCKET_SPEED = 500.f; // movements speed (pixels/s)
 static constexpr int KILL_SCORE_SIMPLE = 100, KILL_SCORE_MOVING = 100, KILL_SCORE_SHOOTING = 100; // scores for enemy killing
 
 // Sprites
